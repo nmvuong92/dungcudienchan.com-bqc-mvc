@@ -259,6 +259,7 @@
     <Compile Include="Models\BQC\DoHinhPhanChieuModel.cs" />
     <Compile Include="Models\BQC\SoTayDienChanModel.cs" />
     <Compile Include="Security\EncodeDecodeJWT.cs" />
+    <Compile Include="ValidationHuyet.cs" />
     <Compile Include="ViewModels\BaoKim\NapTheVM.cs" />
     <Compile Include="ViewModels\BQC\CapNhatUserVM.cs" />
     <Compile Include="ViewModels\BQC\DoiMatKhauVM.cs" />
@@ -276,7 +277,6 @@
     <Compile Include="ViewModels\ThemSanPhamGioHangVM.cs" />
     <Compile Include="ViewModels\User\pLoginVM.cs" />
     <Compile Include="ViewModels\User\RegisterVM.cs" />
-    <Compile Include="ValidationHuyet.cs" />
     <Compile Include="ViewModels\BQC\PDCTview.cs" />
     <Compile Include="XuLyAnh.cs" />
     <Content Include="App_Code\ErrorExt.cs" />
