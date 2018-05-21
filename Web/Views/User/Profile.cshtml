@@ -1,0 +1,310 @@
+﻿@using Web.Models
+@model VD.Data.Entity.User
+
+@{
+    ViewBag.Title = "Trang thông tin tài khoản";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    VIEWSETTING __viewsetting = ViewBag.__viewsetting;
+    bool islog = __viewsetting.__login != null;
+    bool isvip = islog && __viewsetting.__login.IsVip1 == true;
+}
+
+<link href="~/Content/css/profile.css?v=2" rel="stylesheet" />
+
+<div id="user-profile-2" class="user-profile vcontainer">
+    <div class="tabbable">
+        <ul class="nav nav-tabs padding-18">
+            <li class="active">
+                <a href="@Url.Action("Profile","User")">
+                    <i class="green ace-icon fa fa-user bigger-120"></i>
+                    Tiểu sử
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("DonHang","User")">
+                    <i class="blue fa fa-folder bigger-120"></i>
+                    Đơn hàng
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("LichSuGiaoDich","User")">
+                    <i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+                    Lịch sử giao dịch
+                </a>
+            </li>
+
+            <li>
+                <a href="@Url.Action("LichSuNapThe","User")">
+                    <i class="blue ace-icon fa fa-users bigger-120"></i>
+                    Lịch sử nạp thẻ
+                </a>
+            </li>
+
+
+        </ul>
+
+        <div class="tab-content no-border padding-24">
+            <div id="home" class="tab-pane in active">
+                <div class="row">
+
+
+                    <div class="col-xs-12 col-sm-6">
+                        <h4 class="blue  text-center">
+                            <span class="middle">@Model.XungDanh @Model.Fullname</span>
+
+                            <span class="label label-purple arrowed-in-right">
+                                <i class="ace-icon fa fa-circle smaller-80 align-middle"></i>
+                                Trực tuyến
+                            </span>
+                        </h4>
+
+                        <div class="profile-user-info">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Tên tài khoản </div>
+
+                                <div class="profile-info-value">
+                                    <span>@Model.Username</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Vị trí/địa chỉ </div>
+
+                                <div class="profile-info-value">
+                                    <i class="fa fa-map-marker light-orange bigger-110"></i>
+
+                                    <span>@Model.Address</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Số tiền trong tài khoản </div>
+
+                                <div class="profile-info-value">
+                                    <span style="font-weight: bold;">@Model.ViTien.ToMoneyStr() VNĐ</span>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Tỉnh thành </div>
+
+                                <div class="profile-info-value">
+                                    @if (Model.Province != null)
+                                    {
+                                        <span>@Model.Province.Name</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Quận huyện </div>
+
+                                <div class="profile-info-value">
+                                    @if (Model.District != null)
+                                    {
+                                        <span>@Model.District.Name</span>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Phường xã </div>
+
+                                <div class="profile-info-value">
+                                    @if (Model.Ward != null)
+                                    {
+                                        <span>@Model.Ward.Name</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Loại thành viên </div>
+
+                                <div class="profile-info-value">
+                                    @if (Model.IsVip1)
+                                    {
+                                        <span><i class="fa fa-star"></i> VIP</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span>THƯỜNG</span>
+
+                                    }
+
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Ngày đăng ký </div>
+
+                                <div class="profile-info-value">
+                                    <i class="fa fa-calendar light-orange bigger-110"></i>
+                                    <span>@Model.CreatedDate.XuatDateTime()</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Lần cuối trực tuyến </div>
+
+                                <div class="profile-info-value">
+                                    <i class="fa fa-clock-o light-orange bigger-110"></i>
+                                    <span>@DateTime.Now.XuatDate()</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Mật khẩu </div>
+
+                                <div class="profile-info-value">
+                                    <a href="javascript:void(0);" onclick="clsUser.fnShowDoiMatKhau();"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Thông tin cá nhân </div>
+                                <div class="profile-info-value">
+                                    <a href="javascript:void(0);" onclick="clsUser.fnShowCapNhatThongTin();"><i class="fa fa-info"></i> Cập nhật thông tin tài khoản</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr hr-8 dotted"></div>
+
+                        @*<div class="profile-user-info">
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Website </div>
+
+                                    <div class="profile-info-value">
+                                        <a href="#" target="_blank">www.alexdoe.com</a>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">
+                                        <i class="middle ace-icon fa fa-facebook-square bigger-150 blue"></i>
+                                    </div>
+
+                                    <div class="profile-info-value">
+                                        <a href="#">Find me on Facebook</a>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">
+                                        <i class="middle ace-icon fa fa-twitter-square bigger-150 light-blue"></i>
+                                    </div>
+
+                                    <div class="profile-info-value">
+                                        <a href="#">Follow me on Twitter</a>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div><!-- /.col -->
+
+                    @*<div class="col-xs-12 col-sm-6 center">
+
+                        <div class="db-wrapper">
+                            <div class="db-pricing-nine">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th style="background-color: #483d8b; color:white;">THƯỜNG</th>
+                                                <th style="background-color: yellow; color:red;"><i class="fa fa-star"></i> VIP</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="db-width-perticular">Xem/tra cứu huyệt BQC</td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="db-width-perticular">Xem tác dụng huyệt đã tra cứu</td>
+                                                <td><i class="glyphicon glyphicon-remove icon-red"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="db-width-perticular">Đồ hình phản chiếu</td>
+                                                <td><i class="glyphicon glyphicon-remove icon-red"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="db-width-perticular">Giờ vượng tạng phủ</td>
+                                                <td><i class="glyphicon glyphicon-remove icon-red"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="db-width-perticular">Sổ tay diện chẩn</td>
+                                                <td><i class="glyphicon glyphicon-remove icon-red"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="db-width-perticular">Diện chẩn Note</td>
+                                                <td><i class="glyphicon glyphicon-remove icon-red"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="db-width-perticular">Sách diện chẩn BQC</td>
+                                                <td><i class="glyphicon glyphicon-remove icon-red"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="db-width-perticular">Nâng cấp thường xuyên</td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+                                                <td><i class="glyphicon glyphicon-ok icon-green"></i></td>
+
+                                            </tr>
+                                            <tr style="background-color: #e6e6fa">
+                                                <td class="db-width-perticular">Giá</td>
+                                                <td>Miễn phí</td>
+                                                <td>@(__viewsetting.__setting.menh_gia_the_cao_mua_thanh_vien_vip1.ToMoneyStr()) VNĐ</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="db-width-perticular"></td>
+                                                <td></td>
+                                                <td>
+                                                    @if (!Model.IsVip1)
+                                                    {
+
+                                                        <a href="@Url.Action("HinhThucThanhToan", "User")" class="btn btn-sm btn-block btn-success">
+                                                            <i class="ace-icon fa fa-star bigger-120" style="color: yellow;"></i>
+                                                            <span class="bigger-110">Nâng cấp VIP @(__viewsetting.__setting.menh_gia_the_cao_mua_thanh_vien_vip1.ToMoneyStr()) VNĐ</span>
+                                                        </a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <button type="button" disabled="disabled" href="javascript:void(0);" class="btn btn-sm btn-block btn-success">
+
+                                                            <i class="glyphicon glyphicon-ok icon-green"></i> Đã nâng cấp
+                                                        </button>
+                                                    }
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>*@
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

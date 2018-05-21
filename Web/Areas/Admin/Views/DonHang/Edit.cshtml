@@ -1,0 +1,198 @@
+﻿@model Web.Areas.Admin.ViewModels.DonHangCRUD
+
+@{
+    ViewBag.Title = "Sửa đơn hàng";
+    ViewBag.Title2 = "EDIT";
+    Layout = "~/Views/Shared/_bootstrap_modal.cshtml";
+}
+<style>
+  .table-fixed thead {
+  width: 97%;
+}
+.table-fixed tbody {
+  height: 230px;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+  float: left;
+  border-bottom-width: 0;
+}
+</style>
+<div class="modal-body">
+    @using (Ajax.BeginForm("Edit", "DonHang", FormMethod.Post, new AjaxOptions { OnSuccess = "fnOnSuccess" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="show_err" style="color:red;">
+            @Html.ValidationSummary(false)
+        </div>
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered table-stripped">
+                        <tr>
+                            <td>Mã đơn hàng: </td>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <td>Tài khoản: </td>
+                            <td>
+                                @if (Model.entity.UserId != null)
+                                {
+                                    <span>@Model.entity.User.Username</span>
+                                }
+                                else
+                                {
+                                    <span>-Khách vãng lai-</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Họ: </td>
+                            <td>@Model.entity.Ho</td>
+                        </tr>
+                        <tr>
+                            <td>Tên: </td>
+                            <td>@Model.entity.Ten</td>
+                        </tr>
+                        <tr>
+                            <td>SĐT: </td>
+                            <td>@Model.entity.SDT</td>
+                        </tr>
+                        <tr>
+                            <td>Email: </td>
+                            <td>@Model.entity.Email</td>
+                        </tr>
+                        <tr>
+                            <td>Thành phố: </td>
+                            <td>@Model.entity.Province.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Quận huyện: </td>
+                            <td>@Model.entity.District.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Phường, xã: </td>
+                            <td>@Model.entity.Ward.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Địa chỉ: </td>
+                            <td>@Model.entity.DiaChi</td>
+                        </tr>
+                    </table>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HTTTID, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(m => m.HTTTID, Model.ddlHttt, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TrangThaiGiaoHangId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(m => m.TrangThaiGiaoHangId, Model.ddlTrangThaiGiaoHang, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TrangThaiThanhToanId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(m => m.TrangThaiThanhToanId, Model.ddlTrangThaiThanhToan, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GhiChuDonHang, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(m => m.GhiChuDonHang, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="container">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4>
+                                        Ngày đặt mua hàng: @Model.entity.CreatedDate.XuatDateTime()
+                                    </h4>
+                                </div>
+                                <table class="table table-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-2">#</th>
+                                            <th class="col-xs-4">Tên sản phẩm</th>
+                                           
+                                            <th class="col-xs-2">Đơn giá</th>
+                                            <th class="col-xs-2">Số lượng</th>
+                                            <th class="col-xs-2">Thành tiền</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int stt = 0;
+                                        }
+                                        @foreach (var item in Model.entity.CTDonHangs)
+                                        {
+                                            stt++;
+                                            <tr>
+                                                <td class="col-xs-2">@stt</td>
+                                                <td class="col-xs-4">
+                                                    @item.SanPham.ProductName
+                                                </td>
+                                               
+                                                <td class="col-xs-2">@item.DonGia.ToMoneyStr()</td>
+                                                <td class="col-xs-2">@item.SoLuong</td>
+                                                <td class="col-xs-2">@item.ThanhTien.ToMoneyStr()</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="row" style="font-size:1.5em; margin: 10px;">
+                                    <div class="col-md-4">Tổng tiền hàng: @Model.entity.TongTienHang.ToMoneyStr()</div>
+                                    <div class="col-md-4">Tổng tiền Vat: @Model.entity.PTVat.ToMoneyStr() (@Model.entity.PTVat%)</div>
+                                    <div class="col-md-4">Tổng tiền thanh toán: @Model.entity.ThanhTien.ToMoneyStr()</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+      
+         
+            
+       
+
+            
+
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@mui.mui.cancel</button>
+            <button type="submit" class="btn btn-primary">@mui.mui.save</button>
+        </div>
+
+    }
+
+
+  
+    <script>
+        function fnOnSuccess(data) {
+            if (data.r) {
+                $('#modalCRUD').modal('hide');
+                cls.fnReload();
+            } else {
+                toastr.error(data.m);
+            }
+        }
+    </script>
+</div>

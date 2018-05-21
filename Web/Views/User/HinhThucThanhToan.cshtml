@@ -1,0 +1,50 @@
+﻿@using Web.Models
+
+@{
+    ViewBag.Title = "Chọn hình thức thanh toán";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+
+    VIEWSETTING __viewsetting = ViewBag.__viewsetting;
+    bool islog = __viewsetting.__login != null;
+    bool isvip = islog && __viewsetting.__login.IsVip1 == true;
+}
+@section BC{
+    <li class="breadcrumb-item"><a href="@Url.Action("Profile","User")">thông tin tài khoản</a></li>
+}
+
+
+<div class="vcontainer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img src="http://media.bizwebmedia.net/sites/79353/data/images/2014/11/5351172ngan_luong.png" style="width: 300px" />
+            </div>
+            <div class="col-md-6">
+                <div style="height: 180px; overflow: auto;">
+                    <h2>THANH TOÁN TIỀN MẶT</h2>
+                    <ul>
+                        <li>Thanh toán bằng thẻ Visa hoặc MasterCard </li>
+                        <li>Thanh toán online bằng thẻ ngân hàng nội địa</li>
+                        <li>Thanh toán bằng Ví điện tử NgânLượng</li>
+                    </ul>
+                </div>
+                <hr />
+                <a class="btn btn-lg btn-success" href="@Url.Action("ThanhToan","NganLuong")">LỰA CHỌN</a>
+            </div>
+            <div class="col-md-6">
+                <div style="height: 180px; overflow: auto;">
+                    <h2>THANH TOÁN BẰNG THẺ CÀO ĐIỆN THOẠI</h2>
+                    <ul>
+                        <li>VietTel</li>
+                        <li>Vinaphone</li>
+                        <li>Mobiphone</li>
+                        <li>Vcoin</li>
+                        <li>Gate</li>
+                    </ul>
+                </div>
+               <hr/>
+                <a class="btn btn-lg btn-success" href="@Url.Action("NapTheCao","NganLuongMobileCard")">LỰA CHỌN</a>
+            </div>
+        </div>
+    </div>
+</div>

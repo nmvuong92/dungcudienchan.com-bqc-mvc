@@ -1,0 +1,52 @@
+﻿@model VD.Data.Entity.BQC.ThongTin
+
+@{
+    ViewBag.Title = Model.TieuDe;
+    ViewBag.Title2 = "EDIT";
+    Layout = "~/Views/Shared/_vt.cshtml";
+    IEnumerable<SelectListItem> ddlRole = ViewBag.ddlRole;
+}
+
+    @using (Html.BeginForm("Edit", "ThongTin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="show_err" style="color:red;">
+            @Html.ValidationSummary(false)
+        </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.TieuDe, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.TieuDe, new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.NoiDung, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.NoiDung, new { @class = "form-control ckeditor" })
+                    @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@mui.mui.cancel</button>
+            <button type="submit" class="btn btn-primary">@mui.mui.save</button>
+        </div>
+
+    }
+
+<script>
+    function fnOnSuccess(data) {
+        if (data.r) {
+            $('#modalCRUD').modal('hide');
+            cls.fnReload();
+        } else {
+            toastr.error(data.m);
+        }
+    }
+</script>

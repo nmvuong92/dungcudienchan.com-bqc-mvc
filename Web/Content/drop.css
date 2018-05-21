@@ -1,0 +1,152 @@
+﻿.vcenter {
+    vertical-align: middle;
+    line-height: 90px;
+}
+
+.show {
+    display: inline;
+    border: 2px gray solid;
+    background-color: white;
+}
+
+.giohang_inner {
+    display: none;
+    padding: 10px;
+    z-index: 9;
+    background-color: white;
+  
+}
+
+
+.mini_giohang {
+    z-index: 9;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    padding: 10px;
+    height: 40px;
+    background-color: #ffffff;
+    cursor: pointer;
+    border: 1px gray solid;
+}
+
+    .mini_giohang:hover {
+        background-color: yellow;
+    }
+
+    .mini_giohang .v-container {
+    }
+
+.product-item {
+    position: relative;
+
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    height: 280px;
+    border: 0px solid #ddd;
+}
+
+    .product-item .img {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+    }
+
+        .product-item .img .ma-sp {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
+
+    .product-item .btn-add {
+        position: absolute;
+        bottom: 3px;
+        right: 0px;
+    }
+
+.lSPager .active {
+    opacity: 0.5;
+    border: 2px gray solid;
+}
+
+.product-wrapper {
+    border-radius: 5px;
+    border: 1px #f8f8ff solid;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.product-wrapper::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+  width: 100%;
+  height: 4em;
+}
+.menu-item-name {
+    position: absolute;
+    left: 0px;
+    bottom: 75px;
+    text-transform: uppercase;
+    font-size: 13px;
+    width: 100%;
+    color: #ffffff;
+    padding: 10px 0px;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+18,000000+100&0+1,0+2,0+3,0.65+99 */
+background: -moz-linear-gradient(top, rgba(0,0,0,0) 1%, rgba(0,0,0,0) 2%, rgba(0,0,0,0) 3%, rgba(0,0,0,0.1) 18%, rgba(0,0,0,0.65) 99%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(0,0,0,0) 1%,rgba(0,0,0,0) 2%,rgba(0,0,0,0) 3%,rgba(0,0,0,0.1) 18%,rgba(0,0,0,0.65) 99%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(0,0,0,0) 1%,rgba(0,0,0,0) 2%,rgba(0,0,0,0) 3%,rgba(0,0,0,0.1) 18%,rgba(0,0,0,0.65) 99%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */}
+.category-name-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px 0px;
+}
+.category-name {
+    color: #ff792c;
+    font-size: 18px;
+    font-weight: 700;
+    padding-left: 15px !important;
+}
+
+.menu-item-sku {
+    font-size: 13px;
+    width: 100%;
+    color: #ffffff;
+    width: 100%;
+    position: absolute;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+51,0.65+99,0+100 */
+background: -moz-linear-gradient(top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.65) 51%, rgba(0,0,0,0.65) 99%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 51%,rgba(0,0,0,0.65) 99%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 51%,rgba(0,0,0,0.65) 99%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */bottom: 53px;
+}
+.menu-item-btn-cart {
+      position: absolute;
+     left: 0px;
+        bottom: 9px;
+          width: 100%;
+              border: none;
+}
+
+
+
+.vbtn-active {
+    background-color: #fd9626;
+}
+
+.v-price {
+    font-weight: bold;
+}
+
+button:focus {outline:0 !important;}
+button:active {outline:0 !important;}
+button:visited {outline:0 !important;}
+
+

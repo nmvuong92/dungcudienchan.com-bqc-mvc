@@ -1,0 +1,21 @@
+﻿@model IQueryable<VD.Data.Entity.MF.ProductCat>
+@{
+    int sign = ViewBag.sign;
+    int new_sign = sign+1;
+    string _sign = "";
+    for (int i = 0; i < sign; i++)
+    {
+        _sign += "--";
+    }
+}
+@{
+    string SelectedValue = ViewBag.SelectedValue;
+}
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <option value="@item.Id" @(SelectedValue==item.Id.ToString()?"selected":"")>@_sign @item.Name@(item.ShowInProduct ? " (*)" : "")</option>
+        Html.RenderAction("ddlChild", new { parentId = item.Id, sign = new_sign, SelectedValue = SelectedValue });
+    }
+}

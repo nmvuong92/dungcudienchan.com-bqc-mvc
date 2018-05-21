@@ -1,0 +1,73 @@
+﻿@using System.Globalization
+@model Web.ViewModels.WebParts.FooterView
+@*<ul>
+        <li>HomNay: @Model.Statistic.HomNay</li>
+        <li>HomQua: @Model.Statistic.HomQua</li>
+        <li>ThangNay: @Model.Statistic.ThangNay</li>
+        <li>ThangTruoc: @Model.Statistic.ThangTruoc</li>
+        <li>TatCa: @Model.Statistic.TatCa</li>
+    </ul>*@
+
+@{
+
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+}
+@helper selected(string c, string culture)
+{
+    if (c.ToLower() == culture.ToLower())
+    {
+        @:checked="checked"
+    }
+}
+@{
+    var routeValues = this.ViewContext.RouteData.Values;
+    var controller = routeValues["controller"] as string;
+    var action = routeValues["action"] as string;
+    var ri = new RegionInfo(System.Threading.Thread.CurrentThread.CurrentUICulture.LCID);
+    CultureInfo[] cultureInfos = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+}
+
+<footer id="footer" class="midnight-blue">
+    @*<div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-6">
+                    <ul class="pull-right">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Faq</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr/>*@
+    <div class="container">
+        <div class="col-sm-6 col-xs-12 col-md-4">
+            <p><i class="fa fa-copyright"></i> @Html.Raw(Model.copyright)</p>
+            @*<p><i class="fa fa-location-arrow"></i> @Html.Raw(Model.address)</p>*@
+            <p><i class="fa fa-envelope"></i> @Model.mail</p>
+            <p><i class="fa fa-phone"></i> @Model.tel</p>
+        </div>
+        <div class="col-sm-3 col-xs-12 col-md-4 vvvalign1">
+            <a href="https://itunes.apple.com/vn/app/di%E1%BB%87n-ch%E1%BA%A9n-bqc/id1119072167?mt=8&at=10l6Xd&ct=j81f1qbsqe00xkod01g9a">
+                <img src="/Content/img/app-store.png" style="width: 150px;" />
+            </a>
+        </div>
+        <div class="col-sm-3 col-xs-12 col-md-4 vvvalign2">
+          
+            <a href='https://play.google.com/store/apps/details?id=com.vietydao.webit.dienchanbqcpro&hl=vi&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                <img alt='Tải nội dung trên Google Play' src='~/Content/img/google-play.png' style="width: 150px;" />
+            </a>
+        </div>
+    </div>
+    <div class="container text-center">
+        <p>
+            <b>Online</b>: <span style="padding:10px;" id="total_online"></span>
+            <b>Views</b>: <span style="padding:10px;"> @Model.Statistic.TatCa</span>
+        </p>
+    </div>
+</footer><!--/#footer-->
+

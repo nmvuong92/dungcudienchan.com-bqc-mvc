@@ -1,0 +1,110 @@
+﻿@using VD.Data
+@model Web.ViewModels.WebParts.HeaderView
+@{
+
+    string con = ViewContext.ParentActionViewContext.RouteData.Values["controller"].ToString().ToLower();
+    string ac = ViewContext.ParentActionViewContext.RouteData.Values["action"].ToString().ToLower();
+    var ocurid = ViewContext.ParentActionViewContext.RouteData.Values["id"];
+    string curid = ocurid != null ? ocurid.ToString().ToLower() : "";
+
+    string active_home = (new string[] { "home" }).Contains(con) ? "active" : "";
+    string active_about_us = (new string[] { "aboutus" }).Contains(con) ? "active" : "";
+    string active_contact = (new string[] { "contact" }).Contains(con) ? "active" : "";
+    string active_4emp = (new string[] { "employees", "employeesvip" }).Contains(con) && ac.ToLower() != "feeservice" ? "active" : "";
+    string active_4can = (new string[] { "candidates", "job" }).Contains(con) ? "active" : "";
+    string active_industryfocus = (new string[] { "industryfocus" }).Contains(con) ? "active" : "";
+    string ac_dichvucuachungtoi = (new string[] { "employeesvip" }).Contains(con) && ac.ToLower()=="feeservice" ? "active" : "";
+    SysConfigVM __config = ViewBag.__config;
+    Web.Models.VIEWSETTING __vs = ViewBag.__viewsetting;
+}
+
+<div id="main-menu">
+    <div class="container">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center">
+            <a href="@Url.Action("Index","Home")">
+                <img src="@__config.website_logo" style="max-width: 200px" />
+                @*<img src="~/Content/hht/images/logono.png" class="logo">
+                    <img src="~/Content/hht/images/logochu.png" class="tencty">*@
+            </a>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-right">
+            <div class="navbar-wrapper">
+                <div class="menu">
+                    <p>
+                        @foreach (var item in Model.Langs)
+                        {
+                            <a title="@item.Name" href="javascript:void(0);" onclick="fnChangeLang('@item.Code');">
+                                <img src="@item.Flag" class="@(item.Id==Model._current_culture?"active":"")">
+                            </a>
+                        }
+                        @*<button class="btn btn-default btn-lg btn-link" style="font-size:28px;" onclick="clsNotification.fnShowModal()">
+                            <span class="glyphicon glyphicon-bell"></span>
+                        </button>
+                        <span class="badge badge-notify" id="hht-nof-badge">0</span>*@
+                    </p>
+                    <p>
+                        @if (!isLog)
+                        {
+                            <a href="#" data-toggle="modal" data-target="#myModal_dnhap"><i class="fa fa-key" aria-hidden="true"></i> @mui.mui.login</a>
+                            @:|<a href="#" data-toggle="modal" data-target="#myModal_dky"><i class="fa fa-user" aria-hidden="true"></i> @mui.mui.register</a>
+                        }
+                        else
+                        {
+                            @: <a href="@Url.Action("Index","Employees")"><i class="fa fa-user" aria-hidden="true"></i> @mui.mui.hi @log.Username</a>
+                            @: <a href="javascript:void(0);" onclick="CLSGB_MODAL.fnShowWallet();">
+                            if (__vs.__customer == null || (__vs.__customer != null && __vs.__customer.RoleId == 2))
+                            {
+                                @:<i class="fa fa-google-wallet" aria-hidden="true"></i> Wallet
+                            }
+                            @:| <a href="@Url.Action("LogOut","Home")"><i class="fa fa-sign-out" aria-hidden="true"></i> @mui.mui.logout</a>
+                        }
+                        @if (__vs.__customer == null || (__vs.__customer != null && __vs.__customer.RoleId == 1))
+                        {
+                            @:|<a href="javascript:void(0)" onclick="Auth.fnGOCAN('Candidates/SubmitYourCV');"><i class="fa fa-file" aria-hidden="true"></i> @mui.mui.submit_your_cv <i class="fa fa-sign-in" style="@(__vs.__is_can?"display:none":"")"></i></a>
+                        }
+                        else if (__vs.__customer == null || (__vs.__customer != null && __vs.__customer.RoleId == 2))
+                        {
+                            @:|<a href="@Url.Action("PostAJob","EmployeesVip")"><i class="fa fa-paper-plane" aria-hidden="true"></i> @mui.mui.post_a_job</a>
+                        }
+
+
+                </p>
+                <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0px;">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="@active_home"><a href="@Url.Action("Index","Home")">@mui.mui.Home</a></li>
+                            @*<li class="@active_about_us"><a href="@Url.Action("Index","AboutUs")">@mui.mui.about_us</a></li>*@
+                            @if (__vs.__customer == null || (__vs.__customer != null && __vs.__customer.RoleId == 1))
+                            {
+                                <li class="@active_4can"><a href="@Url.Action("Search","Job")">@mui.mui.for_candidates</a></li>
+                            }
+                            @if (__vs.__customer == null || (__vs.__customer != null && __vs.__customer.RoleId == 2))
+                            {
+                                <li class="@(active_4emp)"><a href="@Url.Action("Industry","EmployeesVip")">@mui.mui.for_employees</a></li>
+                            }
+                            <li class="@ac_dichvucuachungtoi"><a href="@Url.Action("FeeService", "EmployeesVip")">@mui.mui.our_services</a></li>
+                            <li class="@active_contact"><a href="@Url.Action("Index","Contact")">@mui.mui.contact</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="line"></div>
+</div>
+<script>
+    function fnChangeLang(_code) {
+        $.getJSON("@Url.Action("SetCulture", "Home")?culture=" + _code, function (data) {
+            window.location.reload(false);
+        });
+    }
+</script>

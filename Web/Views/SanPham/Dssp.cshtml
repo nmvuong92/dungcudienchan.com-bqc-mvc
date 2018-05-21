@@ -1,0 +1,48 @@
+﻿@model Web.ViewModels.MF.ProductIndexByCatView
+@{
+    ViewBag.Title =  "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+<link href="~/Content/dssp.css?v=2" rel="stylesheet" />
+<style>
+    .thongtin * {
+        max-width: 100%;
+    }
+</style>
+<div class="vcontainer thongtin">
+
+
+    <div class="container" id="DSSP">
+        
+        
+     
+            @*string url = Url.Action("Detail", "SanPham", new { id = item.Id, seo_title = item.ProductName.URLFriendly() });*@
+            <!-- Icons -->
+            <div class="col-md-3 text-center product-item" v-for="item in DSSP">
+                <div class="img">
+                    <a href=""><img v-bind:src="item.ThumbnailImage" alt=""></a>
+                </div>
+                <h4 class="padding-top-10 animate fadeIn"><a href="">{{item.ProductName}}</a></h4>
+                <h5 class="padding-10">
+                    @*@if (item.IsGiamGia)
+                    {
+                        <span class="price">@item.GiamGiaCon.ToMoneyStr()</span>
+                        <span class="price-off">@item.Price.ToMoneyStr()</span>
+                    }
+                    else
+                    {
+                        <span class="price-off">@item.Price.ToMoneyStr()</span>
+                    }*@
+                </h5>
+                <!--<span class="sticker-discount sprite sprite-productlist-sticker-discount"> -30% </span>-->
+                <a href=""><p class="link small">Xem chi tiết <i class="fa fa-angle-double-right"></i></p></a>
+                <button v-on:click="addCart(item,1);"><i class="fa fa-cart-plus" aria-hidden="true"></i> <span class="badge">{{item.SLGioHang}}</span></button>
+            </div>
+       
+
+    </div>
+</div>
+
+@section JS{
+   
+}

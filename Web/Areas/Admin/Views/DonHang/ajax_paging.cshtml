@@ -1,0 +1,52 @@
+﻿@model VD.Data.Paging.PG<VD.Data.Entity.MF.DonHang>
+
+@if (Model.L.Any())
+{
+
+    foreach (var item in Model.L)
+    {
+
+        <tr>
+
+            <td>
+                <input type="checkbox" class="cb_item" value="@item.Id" />
+            </td>
+            <td>
+                <a class="btn btn-default btn-xs" onclick="clsProduct.fnShowEdit(@item.Id,$(this))">@item.Id</a>
+            </td>
+          
+            <td>@item.Ho</td>
+            <td>@item.Ten</td>
+            <td>@item.Province.Name</td>
+            <td>@item.SDT</td>
+            <td>@item.SoLuongSanPham</td>
+            <td>@item.TongTienHang.ToMoneyStr()</td>
+            <td>@item.GiaShip.ToMoneyStr()</td>
+            <td>@item.ThanhTien.ToMoneyStr()</td>
+            <td><span class="@item.TrangThaiGiaoHang.CssLabel">@item.TrangThaiGiaoHang.Ten</span></td>
+            <td><span class="@item.TrangThaiThanhToan.CssLabel">@item.TrangThaiThanhToan.Ten</span></td>
+            <td><span>@item.HTTT.Ten</span></td>
+
+        <td>
+
+            <div class="btn-group">
+                <a class="btn btn-default" title="Chỉnh sửa" onclick="clsProduct.fnShowEdit(@item.Id,$(this))"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-default" title="Xóa" onclick="clsProduct.fnDelete(@item.Id,$(this))"><i class="fa fa-remove"></i></a>
+            </div>
+
+        </td>
+    </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="100%" class="nodata">Empty</td>
+    </tr>
+}
+<tr class="trfooter">
+    <td colspan="100%">
+        @Html.Raw(Model.thongtinphantrang)
+    </td>
+</tr>
+

@@ -1,0 +1,24 @@
+﻿@model VD.Data.Entity.BQC.ThongTin
+@{
+    ViewBag.Title = Model!=null?Model.TieuDe:"Thông tin huyệt BQC";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+<style>
+    .thongtin * {
+        max-width: 100%;
+    }
+</style>
+<div class="vcontainer thongtin">
+
+
+    <div class="container">
+        @if (Model == null)
+        {
+            <h2>Đang cập nhật...</h2>
+        }
+        else
+        {
+            @Html.Raw(Model.NoiDung)
+        }
+    </div>
+</div>

@@ -1,0 +1,146 @@
+﻿@using PagedList.Mvc
+@model Web.ViewModels.BQC.PDCTview
+@{
+    ViewBag.Title = "Phác đồ của tôi";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+
+<style>
+    #custom-search-input {
+        padding: 3px;
+        border: solid 1px #E4E4E4;
+        border-radius: 6px;
+        background-color: #fff;
+    }
+
+        #custom-search-input input {
+            border: 0;
+            box-shadow: none;
+        }
+
+        #custom-search-input button {
+            margin: 2px 0 0 0;
+            background: none;
+            box-shadow: none;
+            border: 0;
+            color: #666666;
+            padding: 0 8px 0 10px;
+            border-left: solid 1px #ccc;
+        }
+
+            #custom-search-input button:hover {
+                border: 0;
+                box-shadow: none;
+                border-left: solid 1px #ccc;
+            }
+
+        #custom-search-input .glyphicon-search {
+            font-size: 23px;
+        }
+</style>
+
+<div class="vcontainer">
+
+    <div style="margin-bottom: 15px;">
+        <a href="@Url.Action("TaoMoi")"><i class="fa fa-plus"></i> Tạo mới phác đồ</a>
+    </div>
+    <div>
+        <div id="custom-search-input">
+            <form action="@Url.Action("Index")" method="GET" id="frm1" autocomplete="off">
+                <div class="input-group col-md-12">
+                    <input type="text" class="form-control input-lg" placeholder="Tìm tên phác đồ" name="q" id="q" value="@Model.Q" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="text-center">
+        @if (!string.IsNullOrEmpty(Model.Q))
+        {
+            <div class="default-chip">
+                @Model.Q
+                <span class="glyphicon glyphicon-remove" onclick="window.location.href='@Url.Action("Index")'"></span>
+            </div>
+        }
+    </div>
+
+    <table class="table table-bordered" style="margin-top: 15px;">
+        <thead>
+            <tr>
+                <th>Tên phác đồ (tên bệnh nhân)</th>
+                <th>Huyệt</th>
+                <th>Ghi chú</th>
+                <th>...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.pList.Count == 0)
+            {
+                <tr>
+                    <td colspan="100%">Có 0 phác đồ</td>
+                </tr>
+            }
+            @foreach (var item in Model.pList)
+            {
+                <tr>
+                    <td>@item.TenPhacDo</td>
+                    <td>@item.Huyet</td>
+                    <td>@item.MoTa</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a class="btn btn-xs btn-danger" type="submit" onclick="PDCT.fnDelete(@item.Id);" href="javascript:void(0);">Xóa?</a>
+                            <a class="btn btn-xs btn-default" href="@Url.Action("CapNhat",new{id=item.Id})"><i class="fa fa-pencil"></i> Sửa</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    @if (Model.pList.PageCount > 1)
+    {
+
+        <div class="box-pagination pull-right">
+            @Html.PagedListPager(Model.pList, page => Url.Action("Index", new { page = page, Q = Model.Q }))
+        </div>
+        <div class="clearfix"></div>
+
+    }
+</div>
+@section JS{
+
+    <script src="~/Scripts/MyScripts/ajaxHelpers.js"></script>
+    <script>
+        var PDCT = new function () {
+            var self = this;
+            self.fnDelete = function (_id) {
+                if (confirm('Xóa phác đồ?')) {
+
+                    if (confirm("Bạn có chắc xóa?") == true) {
+                        var ajaxops = {
+                            url: "/PhacDoCuaToi/Xoa/" + _id,
+                            param: JSON.stringify({ id: _id }),
+                            fnSuccess: function (data) { //Success
+                                if (!data.r) {
+                                    alert(data.m);
+                                } else {
+                                    window.location.reload(false);
+                                }
+                            }
+                        };
+                        fnAjax(ajaxops);
+                    }
+
+
+                }
+            }
+        }
+    </script>
+}

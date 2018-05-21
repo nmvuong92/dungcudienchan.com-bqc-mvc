@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Giờ vượng tạng phủ";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+
+<div class="vcontainer">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-5">
+            <div class="panel panel-info wow slideInLeft">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">Múi giờ việt nam</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="wrapper clearfix show">
+                        <div class="clock" id="clock2" style="margin: 0px auto;"></div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-7 text-center">
+
+            <div class="panel panel-info wow slideInRight">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Quy đổi giờ vượng tạng phủ</h3>
+                </div>
+                <div class="panel-body">
+
+                    <img style="max-width: 100%;" id="imgGVTP" src="https://loading.io/spinners/ellipsis/lg.discuss-ellipsis-preloader.gif" />
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+@section JS{
+    <script src="~/Content/Plugin/clock-1.1.0.min.js"></script>
+    <script src="~/Content/Plugin/momentjs/moment.js"></script>
+    <script src="~/Content/Plugin/momentjs/moment-with-locales.js"></script>
+    <script>
+
+        var clock = $("#clock").clock(),
+            data = clock.data('clock');
+
+        // data.pause();
+        // data.start();
+        // data.setTime(new Date());
+
+        var d = new Date();
+        d.setHours(9);
+        d.setMinutes(51);
+        d.setSeconds(20);
+        var clock2 = $("#clock2").clock({
+            theme: 't3'
+        });
+
+    </script>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-36251023-1']);
+        _gaq.push(['_setDomainName', 'jqueryscript.net']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+    <script>
+        var a = moment();
+        var __hour = -1;
+        fnRefreshGVTP();
+        setInterval(function () {
+            fnRefreshGVTP();
+        }, 2000);
+        function fnRefreshGVTP() {
+            var anew = moment();
+            var newhour = anew.hour();
+            if (__hour != newhour) {
+                __hour = newhour;
+                var layGvtp = fnLayGioTangPhu(__hour);
+                console.log(layGvtp);
+                if (layGvtp != undefined) {
+                    $("#imgGVTP").attr("src", "/content/bqc-gvtp/" + layGvtp.hinhanh);
+                }
+            }
+        }
+
+        function fnLayGioTangPhu(gio) {
+
+            var giotangphu = [];
+
+            giotangphu.push({ khungio: [1, 2, 3], hinhanh: "gvtp_12_can.jpg", id: 4 }); //sửu //gvtp_suu.html
+            giotangphu.push({ khungio: [3, 4, 5], hinhanh: "gvtp_1_phe.jpg", id: 6 }); //dần //gvtp_dan.html
+            giotangphu.push({ khungio: [5, 6, 7], hinhanh: "gvtp_2_daitruong.jpg", id: 8 }); //mão //gvtp_mao.html
+            giotangphu.push({ khungio: [7, 8, 9], hinhanh: "gvtp_3_vi.jpg", id: 10 });//thìn gvtp_thin.html
+            giotangphu.push({ khungio: [9, 10, 11], hinhanh: "gvtp_4_ty.jpg", id: 12 }); //tỵ gvtp_ty_ran.html
+            giotangphu.push({ khungio: [11, 12, 13], hinhanh: "gvtp_5_tam.jpg", id: 1 });//ngọ gvtp_ngo.html
+            giotangphu.push({ khungio: [13, 14, 15], hinhanh: "gvtp_6_tieutruong.jpg", id: 3 }); //mùi gvtp_mui.html
+            giotangphu.push({ khungio: [15, 16, 17], hinhanh: "gvtp_7_bangquang.jpg", id: 5 });//thân
+            giotangphu.push({ khungio: [17, 18, 19], hinhanh: "gvtp_8_than.jpg", id: 7 }); //dậu
+            giotangphu.push({ khungio: [19, 20, 21], hinhanh: "gvtp_9_tambao.jpg", id: 9 });//tuất
+            giotangphu.push({ khungio: [21, 22, 23], hinhanh: "gvtp_10_tamtieu.jpg", id: 11 });//hợi
+            giotangphu.push({ khungio: [23, 0, 1], hinhanh: "gvtp_11_dom.jpg", id: 2 });//tý
+
+            var tim = undefined;
+
+            for (var i = 0; i < giotangphu.length; i++) {
+                for (var j = 0; j < giotangphu[i].khungio.length; j++) {
+                    if (gio == giotangphu[i].khungio[j]) {
+                        tim = giotangphu[i];
+                    }
+                }
+            }
+            return tim;
+        }
+    </script>
+}

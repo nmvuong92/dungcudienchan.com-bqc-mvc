@@ -1,0 +1,38 @@
+﻿@model IQueryable<VD.Data.Entity.MF.ProductCat>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ên danh mục cha</th>
+            <th>Hiển thị danh sách sản phẩm trang chủ</th>
+            <th>Số lượng sản phẩm</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="javascript:void(0);" onclick="clsMenu.fnShowEdit(@item.Id,false);">
+                        @item.Name <i class="fa fa-pencil"></i>
+                        <br/> <i>@item.Description</i>
+                          
+                    </a>
+                </td>
+                <td>
+                    @Html.Raw(item.ShowInProduct ? "<i class='fa fa-eye'></i>" : "")
+                </td>
+
+                <td>
+                    @item.Products.Count
+                </td>
+            </tr>
+            <tr>
+                <td colspan="100%">
+                    @{Html.RenderAction("Child", new { parentId = item.Id });}
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

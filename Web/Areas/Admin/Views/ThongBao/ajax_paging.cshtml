@@ -1,0 +1,50 @@
+﻿@using VD.Data.Entity;
+@model VD.Data.Paging.PG<VD.Data.Entity.BQC.ThongBao>
+
+@if (Model.L.Any())
+{
+
+    foreach (var item in Model.L)
+    {
+
+        <tr>
+
+            <td>
+                <input type="checkbox" class="cb_item" value="@item.Id" />
+            </td>
+            <td>@item.Id</td>
+            <td>@item.TieuDe</td>
+            <td>
+                   @if (item.IsHienThi == true)
+                   {
+                       <input type="checkbox" checked="checked" disabled="disabled" class="form-control"/>
+                   }
+                   else
+                   {
+                    <span>không</span>
+                   }
+            </td>
+          
+            <td>
+
+                <div class="btn-group">
+                    <a class="btn btn-default" onclick="clsThongBao.fnShowEdit(@item.Id,$(this))"><i class="fa fa-pencil"></i> Edit</a>
+                    <a class="btn btn-default" onclick="clsThongBao.fnDelete(@item.Id,$(this))"><i class="fa fa-remove"></i> Delete</a>
+                </div>
+
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="100%" class="nodata">Empty</td>
+    </tr>
+}
+<tr class="trfooter">
+    <td colspan="100%">
+        @Html.Raw(Model.thongtinphantrang)
+    </td>
+</tr>
+

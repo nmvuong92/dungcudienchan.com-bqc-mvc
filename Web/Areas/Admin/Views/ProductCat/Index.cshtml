@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "PRODUCT CAT";
+    ViewBag.Title2 = "Index";
+    Layout = "~/Views/Shared/_vt.cshtml";
+}
+
+<a class="btn btn-success" onclick="clsMenu.fnShowCreate();"><i class="fa fa-plus"></i> THÊM MỚI</a>
+<div id="view">
+
+</div>
+
+<script>
+    function isEmpty(el) {
+        return !$.trim(el.html());
+    }
+    var clsMenu = new function () {
+        var self = this;
+        self.modalCRUD = "#modalCRUD";
+        self.loadTable = function () {
+            $("#view").load("@Url.Action("List")",function() {
+
+                $("#view td").each(function (i, e) {
+                    var col = $(e).prop("colSpan");
+                    if (col == 100 && isEmpty($(e))) {
+                        $(e).closest("tr").remove();
+                    }
+                    
+                });
+            });
+        }
+        self.fnShowEdit = function (_id, _ischild) {
+            alert(_id + "" + _ischild);
+        }
+        self.fnDelete = function (_id, that) {
+            if (confirm("Bạn có chắc xóa?") == true) {
+                var ajaxops = {
+                    url: "@Url.Action("Delete")",
+                    param: JSON.stringify({ id: _id }),
+                    fnSuccess: function (data) { //Success
+                        if (!data.r) {
+                            alert(data.m);
+                        } else {
+                            self.loadTable();
+                            self.hideModal();
+                        }
+                    }
+                };
+                fnAjax(ajaxops);
+            }
+
+        }
+        self.fnShowEdit = function (_id) {
+            $.get("@Url.Action("Edit", new { area = "admin" })/" + _id, function (data) {
+                $(self.modalCRUD).find(".main").html(data);
+                $(self.modalCRUD).modal('show');
+            });
+        }
+
+        self.fnShowCreate = function () {
+            $.get('@Url.Action("Create", new { area="admin"})', function (data) {
+                $(self.modalCRUD).find(".main").html(data);
+                $(self.modalCRUD).modal('show');
+            });
+        }
+        self.hideModal = function () {
+            $(self.modalCRUD).modal('hide');
+        }
+    }
+    clsMenu.loadTable();
+
+</script>

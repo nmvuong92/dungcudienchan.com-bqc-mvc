@@ -1,0 +1,235 @@
+﻿@using VD.Data
+@{
+    string con = ViewContext.ParentActionViewContext.RouteData.Values["controller"].ToString().ToLower();
+    string ac = ViewContext.ParentActionViewContext.RouteData.Values["action"].ToString().ToLower();
+    var ocurid = ViewContext.ParentActionViewContext.RouteData.Values["id"];
+    string curid = ocurid != null ? ocurid.ToString().ToLower() : "";
+    var LOG = MySsAuthCustomers.GetAuth();
+
+    bool isEmployees = (new string[] { "employees", "employeesvip" }).Contains(con);
+    bool isCandidates = (new string[] { "job", "candidates" }).Contains(con);
+    bool isTips = (new string[] { "tips" }).Contains(ac);
+    bool isOurServices = (new string[] { "ourservices" }).Contains(ac);
+    bool isEmployee_client = isEmployees && (new string[] { "client" }).Contains(ac);
+
+
+    bool hunting = (new string[] { "hunting" }).Contains(con);
+
+    bool isCanLogged = MySsAuthCandidates.IsAuth();
+    var EmLogged = MySsAuthEmployees.GetAuth();
+    bool isEmLogged = EmLogged != null;
+    int EmServiceId = -1;
+    bool is_hunting = true;
+
+    Web.Models.VIEWSETTING __vs = ViewBag.__viewsetting;
+}
+@{
+    bool is_em = (con == "employees" || con == "employeesvip" || con == "hunting");
+    bool is_can = (con == "candidates" || (con == "job" && ac == "search"));
+}
+<div class="panel-group menudoc" id="accordion">
+    @if (__vs.__is_em)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="@Url.Action("SearchResume", "EmployeesVip")">
+                    <h4 class="panel-title @(is_em ? "active" : "")">
+                        <i class="fa fa-caret-right" aria-hidden="true"></i> @mui.mui.employees
+                    </h4>
+                </a>
+            </div>
+
+
+            <!--- EMPLOYEES -->
+            <div id="collapseOne" class="panel-collapse collapse @(is_em?"in":"")">
+                <div class="panel-body">
+                    <div class="noidung_con">
+                        <ul class="daudong">
+                            @*<a href="@Url.Action("Clients", "Employees")">
+                                <li class="@(ac=="clients" ? "active" : "")"> @mui.mui.clients</li>
+                            </a>*@
+                            <!--authentication-->
+                            @if (isEmLogged)
+                            {
+                                //employees
+                                <li>@mui.mui.post_job_find_talents</li>
+                                <ul>
+                                    <a href="@Url.Action("PostAJob", "EmployeesVip")">
+                                        <li class="@(ac=="postajob"?"active":"")">@mui.mui.post_a_job</li>
+                                    </a>
+                                    <a href="@Url.Action("Industry", "EmployeesVip")">
+                                        <li class="@(ac == "industry"||ac=="searchresume" ? "active" : "")">@mui.mui.search_resume</li>
+                                    </a>
+                                </ul>
+                            }
+                            <!----employees hunting-->
+                            <div class="hht_cmd_use_hunting_service" style="@(__vs.__customer != null && __vs.__customer.ValidIsUseHuntingService ? "" : "display:none;")">
+                                <li class="li-label">@mui.mui.headhunting_service</li>
+                                <ul>
+                                    <a href="@Url.Action("SubmitJobDescription", "Hunting")">
+                                        <li class="@(ac == "SubmitJobDescription".ToLower() ? "active" : "")">@mui.mui.submit_job_decription</li>
+                                    </a>
+                                    <a href="@Url.Action("JobDescriptionManagement", "Hunting")">
+                                        <li class="@(ac == "JobDescriptionManagement".ToLower() ? "active" : "")">@mui.mui.job_description_management</li>
+                                    </a>
+                                    <a href="@Url.Action("Fee", "Hunting")">
+                                        <li class="@(ac == "Fee".ToLower() ? "active" : "")">@mui.mui.headhunting_service_fee</li>
+                                    </a>
+                                </ul>
+                            </div>
+
+                            <li class="li-label">@mui.mui.account_managemant</li>
+                            <ul>
+                                <!--employee post job and find talent-->
+                                <a href="@Url.Action("CVManagement", "EmployeesVip")">
+                                    <li class="@(ac == "CVManagement".ToLower() ? "active" : "")">@mui.mui.cv_applied</li>
+                                </a>
+                                <a href="@Url.Action("CVViewedManagement", "EmployeesVip")">
+                                    <li class="@(ac == "CVViewedManagement".ToLower() ? "active" : "")">@mui.mui.cv_viewed</li>
+                                </a>
+                                <a href="@Url.Action("JobManagement", "EmployeesVip")">
+                                    <li class="@(ac == "JobManagement".ToLower() ? "active" : "")">@mui.mui.posted_jobs</li>
+                                </a>
+
+                                <!--update profile-->
+                                <a href="@Url.Action("Index", "Employees")">
+                                    <li class="@((ac == "Index".ToLower()&&con=="employees") ? "active" : "")"> @mui.mui.update_your_account</li>
+                                </a>
+
+                                <a href="@Url.Action("History", "EmployeesVip")">
+                                    <li class="@((ac == "History".ToLower() && con == "EmployeesVip".ToLower()) ? "active" : "")"> @mui.mui.purchase_history</li>
+                                </a>
+                            </ul>
+
+                            @*<a href="@Url.Action("FeeService", "EmployeesVip")">
+                                <li class="@((ac == "FeeService".ToLower() && con == "EmployeesVip".ToLower()) ? "active" : "")"> @mui.mui.our_services</li>
+                            </a>*@
+                            @*<ul>
+                                <a href="@Url.Action("FeeService", "EmployeesVip")">
+                                    <li class="@(ac=="feeservice"?"active":"")">@mui.mui.post_job_and_find_talents_services_fee</li>
+                                </a>
+                            </ul>*@
+                            <a href="@Url.Action("Tips", "Employees")">
+                                <li class="@(ac == "Tips".ToLower() ? "active" : "")"> @mui.mui.tips_for_emloyees</li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    }
+    else if (!__vs.__is_can)
+    {
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="@Url.Action("SearchResume", "EmployeesVip")">
+                    <h4 class="panel-title @(is_em?"active":"")">
+                        <i class="fa fa-caret-right" aria-hidden="true"></i> @mui.mui.employees
+                    </h4>
+                </a>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse @(is_em?"in":"")">
+                <div class="panel-body">
+                    <div class="noidung_con">
+                        <ul class="daudong">
+                            <a href="@Url.Action("Clients", "Employees")">
+                                <li class="@(ac=="clients" ? "active" : "")"> @mui.mui.clients</li>
+                            </a>
+                            <a href="@Url.Action("FeeService", "EmployeesVip")">
+                                <li class="@((ac == "FeeService".ToLower() && con == "EmployeesVip".ToLower()) ? "active" : "")"> @mui.mui.our_services</li>
+                            </a>
+                            @*<ul>
+                                <a href="@Url.Action("FeeService", "EmployeesVip")">
+                                    <li class="@(ac=="feeservice"?"active":"")">@mui.mui.post_job_and_find_talents_services_fee</li>
+                                </a>
+                            </ul>*@
+                            <a href="@Url.Action("Tips", "Employees")">
+                                <li class="@(ac == "Tips".ToLower() ? "active" : "")"> @mui.mui.tips_for_emloyees</li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+    <!--- CANDIDATES -->
+    @if (__vs.__is_can)
+    {
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="@Url.Action("Search", "Job")">
+                    <h4 class="panel-title @(is_can ? "active" : "")">
+                        <i class="fa fa-caret-right" aria-hidden="true"></i> @mui.mui.candidates
+                    </h4>
+                </a>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse @(is_can ? "in" : "")">
+                <div class="panel-body">
+                    <div class="noidung_con">
+                        <ul class="daudong">
+                            @if (isCanLogged)
+                            {
+                                <a href="@Url.Action("MyCVs", "Candidates")"><li class="li-secret">@mui.mui.update_your_cv</li></a>
+                                <a href="@Url.Action("ApplycationManagement", "Candidates")"><li class="li-secret">@mui.mui.application_management</li></a>
+                                <a href="@Url.Action("CVSavedManagement", "Candidates")"><li class="li-secret">@mui.mui.cv_saved_management</li></a>
+                                <a href="@Url.Action("Index", "Candidates")"><li class="li-secret">@mui.mui.update_your_account</li></a>
+                            }
+
+                            <a href="@Url.Action("SubmitYourCV", "Candidates")"><li class="@(ac=="submityourcv"?"active":"")"> @mui.mui.submit_your_cv</li></a>
+                            <a href="@Url.Action("Search", "Job")">
+                                <li class="@((ac == "search" && con == "job") ? "active" : "")"> @mui.mui.search_job</li>
+                            </a>
+                            <a href="@Url.Action("Tips", "Candidates")"><li class="@(isCandidates && isTips ? "active" : "")"> @mui.mui.tips_for_candidates</li></a>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else if (!__vs.__is_em)
+    {
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="@Url.Action("Search", "Job")">
+                    <h4 class="panel-title @(is_can?"active":"")">
+                        <i class="fa fa-caret-right" aria-hidden="true"></i> @mui.mui.candidates
+                    </h4>
+                </a>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse @(is_can ? "in" : "")">
+                <div class="panel-body">
+                    <div class="noidung_con">
+                        <ul class="daudong">
+                            <a href="@Url.Action("SubmitYourCV","Candidates")"><li>@mui.mui.submit_your_cv <i class="fa fa-sign-in"></i></li></a>
+                            <a href="@Url.Action("Search", "Job")">
+                                <li class="@((ac == "search" && con == "job") ? "active" : "")"> @mui.mui.search_job</li>
+                            </a>
+                            <a href="@Url.Action("tips","candidates")"><li class="@((ac == "tips") ? "active" : "")"> @mui.mui.tips_for_candidates</li></a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="@Url.Action("Index","IndustryFocus")">
+                <h4 class="panel-title @(con == "industryfocus"?"active":"")">
+                    <i class="fa fa-caret-right" aria-hidden="true"></i> @mui.mui.industry_focus
+                </h4>
+            </a>
+        </div>
+    </div>
+</div>
+@*<script>
+        CLSGB_MODAL.fnShowModalDangNhap();
+    </script>*@

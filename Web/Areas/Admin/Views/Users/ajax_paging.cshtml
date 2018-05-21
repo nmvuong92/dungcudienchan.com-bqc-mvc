@@ -1,0 +1,53 @@
+﻿@using VD.Data.Entity;
+@model VD.Data.Paging.PG<User>
+
+@if (Model.L.Any())
+{
+
+    foreach (var item in Model.L)
+    {
+
+        <tr>
+
+            <td>
+                <input type="checkbox" class="cb_item" value="@item.Id" />
+            </td>
+            <td>@item.Id</td>
+            <td>@item.Username</td>
+            <td>@item.Role.Name</td>
+            <td>@item.UserStatus.Name</td>
+            <td>
+                @if (item.IsVip1)
+                {
+                    <i class="fa fa-check-circle-o"></i>
+                    <code>@item.NgayVip.XuatDateTime()</code>
+                    if (!string.IsNullOrWhiteSpace(item.ChuThichVip))
+                    {
+                        <code>@item.ChuThichVip</code>
+                    }
+                }
+            </td>
+            <td>@item.ViTien.ToMoneyStr()</td>
+            <td>@item.CreatedDate.XuatDateTime()</td>
+            <td class="text-center">
+                <div class="btn-group">
+                    <a class="btn btn-default" title="Cập nhật" onclick="clsUsers.fnShowEdit(@item.Id,$(this))"><i class="fa fa-pencil"></i> Sửa</a>
+                    <a class="btn btn-danger" title="Xóa" onclick="clsUsers.fnDelete(@item.Id,$(this))"><i class="fa fa-trash"></i></a>
+                </div>
+
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="100%" class="nodata">Empty</td>
+    </tr>
+}
+<tr class="trfooter">
+    <td colspan="100%">
+        @Html.Raw(Model.thongtinphantrang)
+    </td>
+</tr>
+

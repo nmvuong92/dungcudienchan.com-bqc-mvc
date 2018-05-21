@@ -1,0 +1,82 @@
+﻿@using Web.Models
+@model Web.ViewModels.BaoKim.NapTheVM
+@{
+    ViewBag.Title = "Nạp thẻ cào";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    VIEWSETTING __viewsetting = ViewBag.__viewsetting;
+    bool islog = __viewsetting.__login != null;
+    bool isvip = islog && __viewsetting.__login.IsVip1 == true;
+}
+@section BC{
+    <li class="breadcrumb-item"><a href="@Url.Action("Profile","User")">thông tin tài khoản</a></li>
+}
+
+
+<div class="vcontainer">
+    <div class="container">
+        @using (Html.BeginForm("NapTheCao", "NganLuongMobileCard", FormMethod.Post))
+        {
+
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <h2>Nạp thẻ cào điện thoại mệnh giá <span style="font-weight: bold;">@__viewsetting.__setting.menh_gia_the_cao_mua_thanh_vien_vip1.ToMoneyStr() VNĐ</span></h2>
+                        <div style="color:red;">
+                            @Html.ValidationSummary(false)
+                        </div>
+                    </td>
+                    <tr>
+                        <td colspan="2">
+                            <div class="text-center">
+                                <img src="http://media.bizwebmedia.net/sites/79353/data/images/2014/11/5351172ngan_luong.png" style="width: 300px" />
+                            </div>
+                        </td>
+                    </tr>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>Chọn nhà mạng</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.nhamang, (List<SelectListItem>)ViewBag.ddlNhaMang)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pin card</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.pin)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Serial card</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Seri)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <img src="/Home/CaptchaImage?prefix=nganluongthecao&noisy=false" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>@mui.mui.contact_captcha</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Captcha, new { placeholder = "Nhập mã captcha" })
+
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <br />
+                        <input type="submit" value="Nạp thẻ" class="btn btn-success" />
+                        <a href="@Url.Action("Profile","User")"  class="btn btn-default">Hủy</a>
+                    </td>
+                </tr>
+            </table>
+        }
+
+    </div>
+</div>

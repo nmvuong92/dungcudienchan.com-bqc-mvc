@@ -1,0 +1,166 @@
+﻿@using Web.Models
+@model List<Web.Models.BQC.DoHinhPhanChieuModel>
+@{
+    ViewBag.Title = "Đồ hình phản chiếu";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    VIEWSETTING __viewsetting = ViewBag.__viewsetting;
+    bool islog = __viewsetting.__login != null;
+    bool isvip = islog && __viewsetting.__login.IsVip1 == true;
+}
+
+<style>
+    /* Content loading is in progress */
+    .mfp-s-loading {
+    }
+
+    /* Content successfully loaded */
+    .mfp-s-ready {
+    }
+
+    /* Error during loading  */
+    .mfp-s-error {
+    }
+
+        .mfp-s-error .mfp-preloader {
+            color: red;
+        }
+</style>
+<link href="~/Content/css/dhphanchieu.css" rel="stylesheet" />
+<div class="vcontainer">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group c-search">
+                            <input type="text" class="form-control" id="contact-list-search" placeholder="Tìm kiếm">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search text-muted"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="list-group row" id="contact-list">
+                    @foreach (var item in Model)
+                    {
+                        <li class="list-group-item col-xs-12 col-sm-6 col-md-6 " data-fullimage="@item.FullImage" data-title="@item.Title" data-chuthich="@item.ChuThich">
+                            <div class="col-xs-12 col-sm-4 col-md-4 text-center">
+                                <div style="width: 100%;height: 150px; background: url(@item.Icon) no-repeat center;border-radius: 15px;"></div>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-8  col-md-8">
+                                <span class="name">@item.Title</span>
+                                @if (!string.IsNullOrEmpty(item.ChuThich))
+                                {
+                                    <span class="fa fa-comments text-muted c-info" data-toggle="tooltip" title="scott.stevens@example.com"></span>
+                                    <span class="visible-xs"> <span class="text-muted">Có chú thích</span></span>
+
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section JS{
+    <script src="//rawgithub.com/stidges/jquery-searchable/master/dist/jquery.searchable-1.0.0.min.js"></script>
+    <script src="~/Content/Plugin/Magnific-Popup/dist/jquery.magnific-popup.min.js"></script>
+    <script>
+        $.ajaxSetup({
+            async: false
+        });
+
+        $(function () {
+            if (window.location == window.parent.location) {
+                $('#back-to-bootsnipp').removeClass('hide');
+            }
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('#fullscreen').on('click', function (event) {
+                event.preventDefault();
+                window.parent.location = "http://bootsnipp.com/iframe/4l0k2";
+            });
+            $('a[href="#cant-do-all-the-work-for-you"]').on('click', function (event) {
+                event.preventDefault();
+                $('#cant-do-all-the-work-for-you').modal('show');
+            });
+
+            $('[data-command="toggle-search"]').on('click', function (event) {
+                event.preventDefault();
+                $(this).toggleClass('hide-search');
+
+                if ($(this).hasClass('hide-search')) {
+                    $('.c-search').closest('.row').slideUp(100);
+                } else {
+                    $('.c-search').closest('.row').slideDown(100);
+                }
+            });
+            $('[data-command="toggle-search"]').click();
+
+            $('#contact-list').searchable({
+                searchField: '#contact-list-search',
+                selector: 'li',
+                childSelector: '.col-xs-12',
+                show: function (elem) {
+                    elem.slideDown(100);
+                },
+                hide: function (elem) {
+                    elem.slideUp(100);
+                }
+            });
+        });
+        $('.img-popup').magnificPopup({
+            type: 'image'
+        });
+
+        $(".list-group-item").click(function () {
+            var fullimage = $(this).attr("data-fullimage");
+            var title = $(this).attr("data-title");
+            
+            var filechuthich = $(this).attr("data-chuthich");
+            var chuthich = "";
+            
+            if (filechuthich.length > 3) {
+                $.get("/DoHinhPhanChieu/LayChuThich?ten_file_html=" + filechuthich, function (_html) {
+                    chuthich = _html;
+                });
+            }
+            var theGoodStuff = "<div class='container vpop'><div class='row'><div class='col-md-6'><img oncontextmenu='return false;' style='width:100%;' src='" + fullimage + "'/></div><div class='col-md-6'><h1>" + title + "</h1><hr/><div class='vscroll'>" + chuthich + "</div></div></div>";
+          
+            showDetail(theGoodStuff);
+        });
+    </script>
+    
+    @if (isvip)
+    {
+        <script>
+            function showDetail(theGoodStuff) {
+                $.magnificPopup.open({
+                    preloader: true,
+                    items: {
+                        src: theGoodStuff,
+                    },
+                    type: 'inline'
+                });
+            }
+        </script>
+    }
+    else
+    {
+        <script>
+            function showDetail(theGoodStuff) {
+                alert("Vui lòng nâng cấp thành viên VIP để sử dụng tính năng xem chi tiết đồ hình!");
+            }
+        </script>
+    }
+}

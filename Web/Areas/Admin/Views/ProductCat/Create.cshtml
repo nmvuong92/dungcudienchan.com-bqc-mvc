@@ -1,0 +1,61 @@
+﻿@model Web.Areas.Admin.ViewModels.MF.ProductCatCRUD
+@{
+    ViewBag.Title ="Create new product category menu";
+    Layout = "~/Views/Shared/_bootstrap_modal.cshtml";
+}
+<div class="modal-body">
+    @using (Ajax.BeginForm("CreateProccess", "ProductCat", FormMethod.Post, new AjaxOptions { OnSuccess = "fnOnSuccess" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="show_err" style="color:red;">
+            @Html.ValidationSummary(false)
+        </div>
+      
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ShowInProduct, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(model => model.ShowInProduct, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ShowInProduct, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{Html.RenderAction("ddlParent", new { name = Html.IdFor(m => m.ParentId), SelectedValue = "-1" });}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@mui.mui.cancel</button>
+            <button type="submit" class="btn btn-primary">@mui.mui.save</button>
+        </div>
+
+    }
+</div>
+<script>
+    function fnOnSuccess(data) {
+        if (data.r) {
+            clsMenu.loadTable();
+            clsMenu.hideModal();
+        } else {
+            toastr.error(data.m);
+        }
+    }
+</script>

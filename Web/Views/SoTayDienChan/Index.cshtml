@@ -1,0 +1,229 @@
+﻿@using Web.Models
+@model  List<Web.Models.BQC.DanhMucSoTayDienChanModel>
+@{
+    ViewBag.Title = "Số tay Diện chẩn";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    VIEWSETTING __viewsetting = ViewBag.__viewsetting;
+    bool islog = __viewsetting.__login != null;
+    bool isvip = islog && __viewsetting.__login.IsVip1 == true;
+}
+
+
+
+<div class="vcontainer">
+    <div class="container">
+        
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title  text-center"><button style="margin-top:-5px;" onclick="fnBack();" class="pull-left btn btn-default btnbackhhh"><i class="fa fa-arrow-left"></i> Danh mục</button> <span id="h3danhmuc">Danh mục phác đồ</span></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group" id="DSSTDC000">
+                        @foreach (var item in Model)
+                        {
+                            <a onclick="loadDSSTDC(@item.Id,'@item.TenDanhMuc');" href="javascript:void(0);" class="list-group-item dad">@item.TenDanhMuc@(item.Lock ? Html.Raw(" <i class='fa fa-lock'></i>") : Html.Raw(""))</a>
+                        }
+                    </div>
+                    <div class="dsphacdo" style="display: none;">
+                        <input type="text" class="form-control" placeholder="Search" id="txtSearch" onkeyup='fnSearchLocation($(this));' />
+                        <br />
+                        <div class="text-center" id="link_crud_pdct" style="display: none;">
+                            <a href="@Url.Action("Index","PhacDoCuaToi")"><i class="fa fa-pencil"></i> cập nhật danh sách</a>
+                        </div>
+                        <div class="list-group" id="DSSTDC">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+
+@section JS{
+    <script src="~/Content/Plugin/Magnific-Popup/dist/jquery.magnific-popup.min.js"></script>
+    <script>
+        $.ajaxSetup({
+            async: false
+        });
+        var json = [];
+        $(".btnbackhhh").hide();
+        function loadDSSTDC(__danhmucid, _tendm) {
+            $(".dsphacdo").show();
+            $(".btnbackhhh").show();
+            $("#h3danhmuc").html(_tendm);
+            $("#DSSTDC000").hide();
+            $("#DSSTDC").html("");
+            $("#DSSTDC").html('<img id="imgGVTP" src="https://loading.io/spinners/ellipsis/lg.discuss-ellipsis-preloader.gif" />');
+
+            $.getJSON("/sotaydienchan/ajaxGetByDanhMuc?danhmucid=" + __danhmucid, function(data) {
+                if (data!=undefined && data.Id!=undefined) {
+                    console.log(data.SoTayDienChanModels.length);
+                    $("#h3sotay").html(data.TenDanhMuc);
+                    bindDSSTDC(data);
+
+                    if (data.SoTayDienChanModels.length == 0) {
+                        bindDSSTDC(null,"0 phác đồ");
+                    }
+
+                    $("#txtSearch").removeAttr("disabled");
+                } else {
+
+                    bindDSSTDC(null, data.m);
+                    json = [];
+
+                    $("#txtSearch").attr("disabled", "disabled");
+                }
+
+            });
+        }
+        function fnBack() {
+            $(".btnbackhhh").hide();
+            $("#DSSTDC000").show();
+            $("#h3danhmuc").html("Danh mục phác đồ");
+            $(".dsphacdo").hide();
+        }
+        function bindDSSTDC(data,msg) {
+            if (data == null) {
+                $("#DSSTDC").hide().html("<a style='color:red;' href='javascript:void(0);' class='list-group-item'>"+msg+"</a>").fadeIn(350);
+                return;
+            }
+            json = data.SoTayDienChanModels;
+            //<a href="#" class="list-group-item">First item</a>
+            var _html = "";
+            var _flag_group = -1;
+            for (var i = 0; i < data.SoTayDienChanModels.length; i++) {
+
+                var item = data.SoTayDienChanModels[i];
+                if (_flag_group != item.GroupId && item.SoTayGroupModel != null) {
+                    _flag_group = item.GroupId;
+
+                    _html += '<p  class="list-group-item fragment text-center">' + item.SoTayGroupModel.TenGroup + '</p>';
+                }
+                var _sl = (item.SL > 1) ? "<span class='badge'>" + item.SL + "</span>" : "";
+                var _onclick = 'onclick="fnHienThiPhacDo(' + item.Id + ',' + item.SL + ',1);"';
+                if (item.DanhMucId == 7) {
+                    _onclick = 'onclick="fnHienThiPhacDoCuaToi(' + item.Id + ');"';
+                    $("#link_crud_pdct").show();
+                } else {
+                    $("#link_crud_pdct").hide();
+                }
+                _html += '<a '+_onclick+' href="javascript:void(0);" class="list-group-item">' + item.Ten + _sl + '</a>';
+            }
+            $("#DSSTDC").hide().html(_html).fadeIn(350);
+        }
+
+        function fnHienThiPhacDo(_id, _sl, _stt) {
+            var _img = "/SoTayDienChan/HienThiPhacDo?id=" + _id + "&sl=" + _sl + "&stt=" + _stt;
+            var areaMota = "";
+            if (_sl >= 2) {
+                areaMota += "<div class='btn-group'>";
+                for (var i = 1; i <= _sl; i++) {
+                    var active = "class='btn btn-default'";
+                    if (_stt == i) {
+                        active = "class='btn btn-success'";
+                    }
+                    areaMota += "<button " + active + " type='button'  onclick='fnHienThiPhacDo(" + _id + "," + _sl + "," + (i) + ");'>Phác đồ " + (i) + "</button>";
+                }
+                areaMota += "</div>";
+            }
+            var linkhtml = "/SoTayDienChan/PhacDoHtml?id=" + _id + "&stt=" + (_sl>1?_stt:0);
+            var _htmldata = "";
+            $.get(linkhtml, function(htmldata) {
+                _htmldata = htmldata;
+            });
+            var theGoodStuff = "<div class='container vpop'><div class='row'><div class='col-md-9'><img style='width:100%;' src='" + _img + "'/></div><div class='col-md-3' id='areaMota'>" + areaMota + "<hr/>" + _htmldata + "</div></div>";
+            $.magnificPopup.open({
+                items: {
+                    src: theGoodStuff,
+                },
+                type: 'inline'
+            });
+        }
+        function fnHienThiPhacDoCuaToi(_id) {
+            var _img = "/SoTayDienChan/HienThiPhacDo7?id=" + _id;
+
+            $.getJSON("/SoTayDienChan/PhacDoCuaToiHtml?id=" + _id, function (data) {
+                var areaMota = "<h2>"+data.tieude+"</h2>";
+                var _htmldata = data.mota;
+                var theGoodStuff = "<div class='contaner vpop'><div class='row'><div class='col-md-9'><img style='width:100%;' src='" + _img + "'/></div><div class='col-md-3' id='areaMota'>" + areaMota + "<hr/>" + _htmldata + "</div></div></div>";
+                $.magnificPopup.open({
+                    items: {
+                        src: theGoodStuff,
+                    },
+                    type: 'inline'
+                });
+            });
+
+        }
+
+        function fnSearchLocation(that) {
+            console.log(json);
+
+            if (that.val() != ' ') {
+                var json2 = getObjects(json, 'Ten', that.val());
+                bindJsonLocation(json2);
+            }
+        }
+
+
+        function bindJsonLocation(__json) {
+            $("#DSSTDC").html("");
+            $("#DSSTDC").html('<img id="imgGVTP" src="https://loading.io/spinners/ellipsis/lg.discuss-ellipsis-preloader.gif" />');
+            var _html = "";
+            var _flag_group = -1;
+            for (var i = 0; i < __json.length; i++) {
+
+                var item = __json[i];
+
+                //show group
+                if (_flag_group != item.GroupId && item.SoTayGroupModel != null) {
+                    _flag_group = item.GroupId;
+                    _html += '<p  class="list-group-item fragment text-center">' + item.SoTayGroupModel.TenGroup + '</p>';
+                }
+
+
+
+                var _sl = (item.SL > 1) ? "<span class='badge'>" + item.SL + "</span>" : "";
+                var _onclick = 'onclick="fnHienThiPhacDo(' + item.Id + ',' + item.SL + ',1);"';
+                if (item.DanhMucId == 7) {
+                    _onclick = 'onclick="fnHienThiPhacDoCuaToi(' + item.Id + ');"';
+                    $("#link_crud_pdct").show();
+                } else {
+                    $("#link_crud_pdct").hide();
+                }
+                _html += '<a '+_onclick+' href="javascript:void(0);" class="list-group-item">' + item.Ten + _sl + '</a>';
+
+
+                //_html += '<a href="#" class="list-group-item">' + item.Ten + '</a>';
+
+
+            }
+            $("#DSSTDC").hide().html(_html).fadeIn(350);
+        }
+
+        function getObjects(obj, key, val) {
+            var newObject = jQuery.extend({}, obj);
+
+            var objects = [];
+            for (var i in newObject) {
+                if (!newObject.hasOwnProperty(i)) continue;
+                if (typeof newObject[i] == 'object') {
+                    objects = objects.concat(getObjects(newObject[i], key, val));
+                } else if (i == key && newObject[key].toLowerCase().indexOf(val.toLowerCase()) !== -1) {
+                    var position = newObject[key].toLowerCase().indexOf(val.toLowerCase());
+                    var rep1 = "<span class='hightlight'>";
+                    var rep2 = "</span>";
+                    var output = [newObject[key].slice(0, position), rep1, newObject[key].slice(position)].join('');
+                    var position2 = position + val.length + rep1.length;
+                    var output2 = [output.slice(0, position2), rep2, output.slice(position2)].join('');
+                    newObject[key] = output2;
+
+                    objects.push(newObject);
+                }
+            }
+            return objects;
+        }
+    </script>
+}

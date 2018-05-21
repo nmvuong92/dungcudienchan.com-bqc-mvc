@@ -1,0 +1,84 @@
+﻿@model VD.Data.Paging.PG<VD.Data.Entity.MF.Product>
+
+@if (Model.L.Any())
+{
+
+    foreach (var item in Model.L)
+    {
+
+        <tr>
+
+            <td>
+                <input type="checkbox" class="cb_item" value="@item.Id" />
+            </td>
+            <td>
+                <a class="btn btn-default btn-xs" onclick="clsProduct.fnShowEdit(@item.Id,$(this))">@item.Id</a>
+            </td>
+            <td>@item.MaSP</td>
+            <td>@item.ProductName</td>
+            <td>
+               <span class="price-off">@item.Price.ToMoneyStr()</span>
+            </td>
+            <td>@item.ProductCat.Name</td>
+        
+            <td>
+                <a class="img-popup" href="@item.ThumbnailImage">
+                    <img src="@item.ThumbnailImage" width="50px;" />
+                </a>
+            </td>
+            <td>
+                @if (item.ConHang)
+                {
+                    <i class="fa fa-check">Còn</i>
+                }
+                else
+                {
+                    <span>Tạm hết</span>
+                }
+            </td>
+
+            <td>
+
+                @if (item.MainProduct)
+                {
+                    <button class="btn btn-success" onclick="clsProduct.fnSetMainProduct(@item.Id,$(this))"><i class="fa fa-check"></i></button>
+                }
+                else
+                {
+                    <button class="btn" onclick="clsProduct.fnSetMainProduct(@item.Id,$(this))">Set</button>
+                }
+            </td>
+            <td>
+                @if (item.IsBanChay)
+                {
+                    <button class="btn btn-success" onclick="clsProduct.fnSetBanChayProduct(@item.Id,$(this))"><i class="fa fa-check"></i></button>
+                }
+                else
+                {
+                    <button class="btn" onclick="clsProduct.fnSetBanChayProduct(@item.Id,$(this))">Set</button>
+                }
+            </td>
+
+        <td>
+
+            <div class="btn-group">
+                <a class="btn btn-default" title="Chỉnh sửa" onclick="clsProduct.fnShowEdit(@item.Id,$(this))"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-default" title="Xóa" onclick="clsProduct.fnDelete(@item.Id,$(this))"><i class="fa fa-remove"></i></a>
+            </div>
+
+        </td>
+    </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="100%" class="nodata">Empty</td>
+    </tr>
+}
+<tr class="trfooter">
+    <td colspan="100%">
+        @Html.Raw(Model.thongtinphantrang)
+    </td>
+</tr>
+

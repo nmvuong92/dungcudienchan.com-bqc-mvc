@@ -1,0 +1,64 @@
+﻿@model Web.ViewModels.MF.TinTucChiTietView
+@{
+    ViewBag.Title = Model.BaiViet.Title;
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid background-white main_products" id="main_products">
+        <div class="margin-vert-30">
+            <!-- breadcrumb -->
+            @*<div class="breadcrumb clearfix">
+                    <a class="home" href="index.html" title="Trở về trang chủ">Trang chủ</a>
+                    <span class="navigation-pipe"></span>
+                    <span class="navigation_page">Chi tiết</span>
+
+                </div>*@
+
+            @Html.myBreadCrumbs(new List<MvcHtmlString>()
+            {
+                Html.ActionLink("Tin tức","Index","TinTuc")
+            })
+            <!-- ./breadcrumb -->
+            <div class="detail">
+                <div class="page-heading">
+                    <h2>@Model.BaiViet.Title</h2>
+                    <p class="child">@Model.BaiViet.CreatedDate.XuatDateTime()</p>
+                </div>
+
+                <hr style="margin: 5px;">
+                <div class="para">
+                    @Html.Raw(Model.BaiViet.Content)
+                </div>
+            </div>
+            <hr />
+            <!-- Recent Posts -->
+            <div class="recent-posts">
+                <h3>Tin liên quan</h3>
+                <ul class="posts-list margin-top-10">
+
+                    @foreach (var item in Model.LienQuan)
+                    {
+                        string url = Url.Action("Detail", "TinTuc", new { id = item.Id, seo_title = item.SEOTitle });
+                        <li class="col-md-6">
+                            <div class="recent-post">
+                                <a href="@url">
+                                    <img class="pull-left" src="@item.ImageThumbnail" alt="thumb1" style="width: 100px;">
+                                </a>
+                                <a href="@url" class="posts-list-title">@item.Title</a>
+                                <br>
+                                <span class="recent-post-date">
+                                    @item.CreatedDate.XuatDate()
+                                </span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <!-- End Recent Posts -->
+        </div>
+    </div>
+    <!-- /.our-team -->
+</div>
+

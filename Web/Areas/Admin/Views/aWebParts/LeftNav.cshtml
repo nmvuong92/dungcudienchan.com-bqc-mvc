@@ -1,0 +1,158 @@
+﻿
+@{
+    string con = ViewContext.ParentActionViewContext.RouteData.Values["controller"].ToString().ToLower();
+    string ac = ViewContext.ParentActionViewContext.RouteData.Values["action"].ToString().ToLower();
+    var ocurid = ViewContext.ParentActionViewContext.RouteData.Values["id"];
+    string curid = ocurid != null ? ocurid.ToString().ToLower() : "";
+
+    VD.Data.SysConfigVM __config = ViewBag.__config;
+    var __log = VD.Data.MySsAuthUsers.GetAuth();
+}
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="@Url.Action("Index","Home",new{area="Admin"})" class="site_title">
+        
+                <img src="~/Content/gentelella/images/protect.png" style="width:48px;" />
+            <span>@__config.conf_website.Truncate(25)</span></a>
+        </div>
+        <div class="clearfix"></div>
+        <!-- menu profile quick info -->
+        @*<div class="profile">
+            <div class="profile_pic">
+                <img src="http://stc.chuanmen.com.vn/uploads/2016/09/d4427e86a60554bd0782ecca3d3e9090.png" alt="..." class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>@__log.Username</span>
+                
+            </div>
+        </div>*@
+        <!-- /menu profile quick info -->
+        <br />
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                @*<h3>@__log.RoleName</h3>*@
+                <ul class="nav side-menu">
+                    <li>
+                        <a><i class="fa fa-internet-explorer"></i> @mui.mui.navigate <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="@Url.Action("Index","Home",new{Area="Admin"})">Dashboard <i class="fa fa-home"></i></a></li>
+                            <li><a href="@Url.Action("Index","Home",new{Area=""})" target="_blank">@mui.mui.Home <i class="fa fa-link"></i></a></li>
+                        </ul>
+                    </li>
+            
+                    <li><a href="@Url.Action("Index", "ThongBao", new { Area = "Admin" })"><i class="fa fa-bell"></i> Thông báo</a></li>
+                    <li><a href="@Url.Action("Index", "ThongTin", new { Area = "Admin" })"><i class="fa fa-info"></i> Thông tin huyệt BQC</a></li>
+                   
+                    
+                    <li><a href="@Url.Action("Index", "Config", new { Area = "Admin" })"><i class="fa fa-rss" aria-hidden="true"></i> Quản lý nội dung</a></li>
+                    <li><a href="@Url.Action("Index", "Users", new { Area = "Admin" })"><i class="fa fa-users"></i> Tài khoản thành viên</a></li>
+                    <li>
+                        <a><i class="fa fa-cubes" aria-hidden="true"></i> Sản phẩm<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="@Url.Action("Index", "ProductCat", new { area = "Admin" })">Danh mục</a></li>
+                            <li><a href="@Url.Action("Index","Product",new{area="Admin"})">Sản phẩm</a></li>
+                        </ul>
+                    </li>
+                
+                    <li><a href="@Url.Action("Index","PhiVanChuyen",new{area="Admin"})"><i class="fa fa-car" aria-hidden="true"></i> Phí vận chuyển</a></li>
+                       
+                    <li>
+                        <a><i class="fa fa-windows"></i> Tin tức<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="@Url.Action("Index", "Catalog", new { area = "Admin" })">Danh mục</a></li>
+                            <li><a href="@Url.Action("Index", "Article", new { area = "Admin" })">Bài viết</a></li>
+                          
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("Index", "DonHang", new { Area = "Admin" })"><i class="fa fa-handshake-o" aria-hidden="true"></i> Đơn đặt hàng</a></li>
+                </ul>
+            </div>
+            <div class="menu_section">
+                <h3>System</h3>
+                <ul class="nav side-menu">
+                  
+                    <li>
+                        <a><i class="fa fa-cogs"></i> Cài đặt <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="@Url.Action("Rpp","Setting",new{area="Admin"})">Phân trang</a></li>
+                            <li>
+                                <a>Email setting<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu">
+                                        <a href="@Url.Action("Smtp","Setting",new{area="Admin"})">Smtp</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("EmailRobot","Setting",new{area="Admin"})">Email account</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a>Mẫu thư<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu">
+                                        <a href="@Url.Action("ContactEmail","Setting",new{area="Admin"})">Liên hệ</a>
+                                    </li>
+                                    <li class="sub_menu">
+                                        <a href="@Url.Action("ThongBaoDatHang", "Setting", new { area = "Admin" })">Thông báo đặt hàng</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    @*<li>
+                        <a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="page_403.html">403 Error</a></li>
+                            <li><a href="page_404.html">404 Error</a></li>
+                            <li><a href="page_500.html">500 Error</a></li>
+                            <li><a href="plain_page.html">Plain Page</a></li>
+                            <li><a href="login.html">Login Page</a></li>
+                            <li><a href="pricing_tables.html">Pricing Tables</a></li>
+                        </ul>
+                    </li>*@
+                    @*<li>
+                        <a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="#level1_1">Level One</a>
+                            <li>
+                                <a>Level One<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu">
+                                        <a href="level2.html">Level Two</a>
+                                    </li>
+                                    <li>
+                                        <a href="#level2_1">Level Two</a>
+                                    </li>
+                                    <li>
+                                        <a href="#level2_2">Level Two</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>*@
+                   
+                </ul>
+            </div>
+        </div>
+        <!-- /sidebar menu -->
+        <!-- /menu footer buttons -->
+        <div class="sidebar-footer hidden-small">
+            <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Logout" href="@Url.Action("Logout","Auth",new{area=""})">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </a>
+        </div>
+        <!-- /menu footer buttons -->
+    </div>
+</div>

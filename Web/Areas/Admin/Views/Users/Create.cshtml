@@ -1,0 +1,68 @@
+﻿@model Web.ViewModels.Admin.Form.Users.FrmCreateUserVM
+
+@{
+    ViewBag.Title = "USERS";
+    ViewBag.Title2 = "CREATE NEW";
+    Layout = "~/Views/Shared/_bootstrap_modal.cshtml";
+    IEnumerable<SelectListItem> ddlRole = ViewBag.ddlRole;
+}
+<div class="modal-body">
+    @using (Ajax.BeginForm("Create", "Users", FormMethod.Post, new AjaxOptions { OnSuccess = "fnOnSuccess" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="show_err" style="color:red;">
+            @Html.ValidationSummary(false)
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Username, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsVip, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(model => model.IsVip, new { @class = "" })
+                    @Html.ValidationMessageFor(model => model.IsVip, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Role</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.RoleID, ddlRole, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">@mui.mui.cancel</button>
+        <button type="submit" class="btn btn-primary">@mui.mui.save</button>
+    </div>
+
+    }
+
+</div>
+
+
+<script>
+    function fnOnSuccess(data) {
+        if (data.r) {
+            $('#modalCRUD').modal('hide');
+            cls.fnReload();
+        } else {
+            toastr.error(data.m);
+        }
+    }
+</script>

@@ -1,0 +1,72 @@
+﻿@model VD.Data.Entity.BQC.PhacDoCuaToi
+@{
+    ViewBag.Title = "Tạo mới phác đồ";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+<div class="vcontainer">
+    @using (Html.BeginForm("TaoMoi", "PhacDoCuaToi", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="show_err" style="color:red;">
+            @Html.ValidationSummary(false)
+        </div>
+
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.TenPhacDo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.TenPhacDo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TenPhacDo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Huyet, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <span>
+                        Các huyệt cách nhau bằng dấu phẩy <br />-Ví dụ: 0,19,39,45 <br />-Phức tạp: 0+,19,45-
+                    </span>
+                    @Html.TextAreaFor(model => model.Huyet, new { @class = "form-control", @onkeyup = "PDCT.Preview($(this));" })
+                    @Html.ValidationMessageFor(model => model.Huyet, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MoTa, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="text-center btn-group pull-right">
+            <a class="btn btn-default" data-dismiss="modal" href="@Url.Action("Index")"><i class="fa fa-backward"></i> Hủy</a>
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Lưu</button>
+        </div>
+    }
+    <div class="clearfix"></div>
+    <div id="xem-thu" class="text-center">
+        <h2 class="tb">...</h2>
+        <img style="max-width: 100%;" src="" />
+    </div>
+</div>
+
+@section JS{
+    <script>
+        var PDCT = new function() {
+            var self = this;
+            self.Preview = function (that) {
+                $("#xem-thu img").attr("src", "https://loading.io/spinners/ellipsis/lg.discuss-ellipsis-preloader.gif");
+                var dsh = that.val();
+                $.post("/Phacdocuatoi/Preview", { dshuyet: dsh }, function (data) {
+                    $(".tb").html(data.vall.m);
+                    if (data.vall.r == false) {
+                        $(".tb").css("color", "red");
+                    } else {
+                        $(".tb").css("color", "green");
+                    }
+                    $("#xem-thu img").hide().attr("src", "data:image/png;base64," + data.base64img).show(300);
+                });
+            }
+        }
+    </script>
+}

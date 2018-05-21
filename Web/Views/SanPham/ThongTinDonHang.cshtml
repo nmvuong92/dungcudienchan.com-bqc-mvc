@@ -1,0 +1,165 @@
+﻿@model VD.Data.Entity.MF.DonHang
+@{
+    ViewBag.Title = "THÔNG TIN ĐƠN ĐẶT HÀNG";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+
+<div class="vcontainer">
+    <div class="text-center">
+        <h2>THÔNG TIN ĐƠN ĐẶT HÀNG</h2>
+        <img src="~/Content/img/contact.jpg" />
+        <div style="margin-top: 15px; margin-bottom: 25px;padding:6px 12px;">
+            <a class="btn btn-primary" href="@Url.Action("Index","SanPham")"><i class="fa fa-arrow-left"></i> Tiếp tục mua hàng</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-stripped">
+        <tr>
+            <td>Mã đơn hàng: </td>
+            <td>###@Model.Id</td>
+        </tr>
+        <tr>
+            <td>Tài khoản: </td>
+            <td>
+                @if (Model.UserId != null)
+                {
+                    <span>@Model.User.Username</span>
+                }
+                else
+                {
+                    <span>-Khách vãng lai-</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Họ Tên: </td>
+            <td>@Model.Ho @Model.Ten</td>
+        </tr>
+        <tr>
+            <td>SĐT: </td>
+            <td>@Model.SDT</td>
+        </tr>
+        <tr>
+            <td>Email: </td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td>Địa chỉ: </td>
+            <td>@Model.DiaChi,@Model.Ward.Name, @Model.District.Name, @Model.Province.Name</td>
+        </tr>
+        @*<tr>
+            <td>Thành phố: </td>
+            <td>@Model.Province.Name</td>
+        </tr>
+        <tr>
+            <td>Quận huyện: </td>
+            <td>@Model.District.Name</td>
+        </tr>
+        <tr>
+            <td>Phường, xã: </td>
+            <td>@Model.Ward.Name</td>
+        </tr>
+        <tr>
+            <td>Địa chỉ: </td>
+            <td>@Model.DiaChi</td>
+        </tr>*@
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.HTTTID)</td>
+            <td>
+                @Model.HTTT.Ten
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.TrangThaiGiaoHangId)</td>
+            <td>
+                @Model.TrangThaiGiaoHang.Ten
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.GhiChuDonHang)</td>
+            <td>
+                @Html.Raw(Model.GhiChuDonHang)
+            </td>
+        </tr>
+        <tr>
+            <td>Ngày đặt mua hàng:</td>
+            <td>
+                @Model.CreatedDate.XuatDateTime()
+            </td>
+        </tr>
+    </table>
+
+
+
+   <h4>
+            Chi tiết giỏ hàng
+        </h4>
+        <div >
+            <table class="table table-bordered table-fixed">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th style="width: 50px;"></th>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá  (VNĐ)</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền (VNĐ)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int stt = 0;
+                }
+                @foreach (var item in Model.CTDonHangs)
+                {
+                    stt++;
+                    <tr>
+                        <td>@stt</td>
+                        <td><img src="@item.SanPham.ThumbnailImage" style="width: 50px;" /></td>
+                        <td>
+                            @item.SanPham.ProductName
+                        </td>
+                        <td class="text-center">@item.DonGia.ToMoneyStr()</td>
+                        <td class="text-center">@item.SoLuong</td>
+                        <td class="text-right">@item.ThanhTien.ToMoneyStr()</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Tổng tiền hàng: 
+                    </td>
+                    <td class="text-right">
+                        @Model.TongTienHang.ToMoneyStr() VNĐ
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Tổng tiền Vat: 
+                    </td>
+                    <td class="text-right">
+                        @Model.PTVat.ToMoneyStr() (@Model.PTVat%)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Phí giao hàng: 
+                    </td>
+                    <td class="text-right">
+                        @Model.GiaShip.ToMoneyStr() VNĐ
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Tổng tiền thanh toán: 
+                    </td>
+                    <td class="text-right">
+                        @Model.ThanhTien.ToMoneyStr() VNĐ
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+
+</div>

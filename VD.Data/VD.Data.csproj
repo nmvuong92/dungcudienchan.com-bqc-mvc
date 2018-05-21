@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{26D341B6-100C-462F-A288-BD64FE9EFCDE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VD.Data</RootNamespace>
+    <AssemblyName>VD.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="effts">
+      <HintPath>..\libs\effts\effts.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="StackExchange.Redis">
+      <HintPath>..\packages\StackExchange.Redis.1.2.0\lib\net45\StackExchange.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTrans\MuiMuiAttribute.cs" />
+    <Compile Include="Base\CacheServ.cs" />
+    <Compile Include="Base\constCacheKey.cs" />
+    <Compile Include="Base\EnumLoginResult.cs" />
+    <Compile Include="Base\ObjectContextExtensions.cs" />
+    <Compile Include="DataTrans\mui.Designer.cs">
+      <DependentUpon>mui.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Entity\BQC\ThongBao.cs" />
+    <Compile Include="Entity\BQC\ThongTin.cs" />
+    <Compile Include="Entity\BQC\LichSuGiaoDich.cs" />
+    <Compile Include="Entity\BQC\PhacDoCuaToi.cs" />
+    <Compile Include="Entity\BQC\LichSuNapThe.cs" />
+    <Compile Include="Entity\Counter.cs" />
+    <Compile Include="Entity\MF\Article.cs" />
+    <Compile Include="Entity\MF\Catalog.cs" />
+    <Compile Include="Entity\MF\Category.cs" />
+    <Compile Include="Entity\MF\Contact.cs" />
+    <Compile Include="Entity\MF\CTDonHang.cs" />
+    <Compile Include="Entity\MF\District.cs" />
+    <Compile Include="Entity\MF\DonHang.cs" />
+    <Compile Include="Entity\MF\HTTT.cs" />
+    <Compile Include="Entity\MF\ImgTmp.cs" />
+    <Compile Include="Entity\MF\Product.cs" />
+    <Compile Include="Entity\MF\ProductCat.cs" />
+    <Compile Include="Entity\MF\Province.cs" />
+    <Compile Include="Entity\MF\Slider.cs" />
+    <Compile Include="Entity\MF\TrangThaiGiaoHang.cs" />
+    <Compile Include="Entity\MF\TrangThaiThanhToan.cs" />
+    <Compile Include="Entity\MF\Ward.cs" />
+    <Compile Include="IRepository\IArticleRepository.cs" />
+    <Compile Include="IRepository\IContactRepository.cs" />
+    <Compile Include="IRepository\IDonHangRepository.cs" />
+    <Compile Include="IRepository\IImgTmpRepository.cs" />
+    <Compile Include="IRepository\IPermissionRepository.cs" />
+    <Compile Include="IRepository\IProductRepository.cs" />
+    <Compile Include="IRepository\IThongBaoRepository.cs" />
+    <Compile Include="Migrations\201709190135231_fff.cs" />
+    <Compile Include="Migrations\201709190135231_fff.Designer.cs">
+      <DependentUpon>201709190135231_fff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709201538338_phac_do_cua_toi.cs" />
+    <Compile Include="Migrations\201709201538338_phac_do_cua_toi.Designer.cs">
+      <DependentUpon>201709201538338_phac_do_cua_toi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709211002344_shoot.cs" />
+    <Compile Include="Migrations\201709211002344_shoot.Designer.cs">
+      <DependentUpon>201709211002344_shoot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709251058468_user.cs" />
+    <Compile Include="Migrations\201709251058468_user.Designer.cs">
+      <DependentUpon>201709251058468_user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709260356509_del_Rememberme.cs" />
+    <Compile Include="Migrations\201709260356509_del_Rememberme.Designer.cs">
+      <DependentUpon>201709260356509_del_Rememberme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710010557232_giaodich.cs" />
+    <Compile Include="Migrations\201710010557232_giaodich.Designer.cs">
+      <DependentUpon>201710010557232_giaodich.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710010805376_shooot2.cs" />
+    <Compile Include="Migrations\201710010805376_shooot2.Designer.cs">
+      <DependentUpon>201710010805376_shooot2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710010849399_shooot3.cs" />
+    <Compile Include="Migrations\201710010849399_shooot3.Designer.cs">
+      <DependentUpon>201710010849399_shooot3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710040418585_thongtinggg.cs" />
+    <Compile Include="Migrations\201710040418585_thongtinggg.Designer.cs">
+      <DependentUpon>201710040418585_thongtinggg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710060134426_thongbao.cs" />
+    <Compile Include="Migrations\201710060134426_thongbao.Designer.cs">
+      <DependentUpon>201710060134426_thongbao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710060224245_shoot12.cs" />
+    <Compile Include="Migrations\201710060224245_shoot12.Designer.cs">
+      <DependentUpon>201710060224245_shoot12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710160315386_nvvip.cs" />
+    <Compile Include="Migrations\201710160315386_nvvip.Designer.cs">
+      <DependentUpon>201710160315386_nvvip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710160322354_chuthichvup.cs" />
+    <Compile Include="Migrations\201710160322354_chuthichvup.Designer.cs">
+      <DependentUpon>201710160322354_chuthichvup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712141226230_dungcu_mg.cs" />
+    <Compile Include="Migrations\201712141226230_dungcu_mg.Designer.cs">
+      <DependentUpon>201712141226230_dungcu_mg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712141434478_product_masp_mg.cs" />
+    <Compile Include="Migrations\201712141434478_product_masp_mg.Designer.cs">
+      <DependentUpon>201712141434478_product_masp_mg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712141445026_xoa_dm2_mg.cs" />
+    <Compile Include="Migrations\201712141445026_xoa_dm2_mg.Designer.cs">
+      <DependentUpon>201712141445026_xoa_dm2_mg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712141512410_edit_user_mg.cs" />
+    <Compile Include="Migrations\201712141512410_edit_user_mg.Designer.cs">
+      <DependentUpon>201712141512410_edit_user_mg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712141525284_update_setting_mg.cs" />
+    <Compile Include="Migrations\201712141525284_update_setting_mg.Designer.cs">
+      <DependentUpon>201712141525284_update_setting_mg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712162357254_mg_bogiamgia.cs" />
+    <Compile Include="Migrations\201712162357254_mg_bogiamgia.Designer.cs">
+      <DependentUpon>201712162357254_mg_bogiamgia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712171000548_mg_guiemaildonhang.cs" />
+    <Compile Include="Migrations\201712171000548_mg_guiemaildonhang.Designer.cs">
+      <DependentUpon>201712171000548_mg_guiemaildonhang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712171505514_mg_aboutusmain.cs" />
+    <Compile Include="Migrations\201712171505514_mg_aboutusmain.Designer.cs">
+      <DependentUpon>201712171505514_mg_aboutusmain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ArticleRepository.cs" />
+    <Compile Include="Repository\ContactRepository.cs" />
+    <Compile Include="Repository\DonHangRepository.cs" />
+    <Compile Include="Repository\ImgTmpRepository.cs" />
+    <Compile Include="Repository\ProductRepository.cs" />
+    <Compile Include="Repository\ThongBaoRepository.cs" />
+    <Compile Include="SysConfigVM.cs" />
+    <Compile Include="DatabaseFactory.cs" />
+    <Compile Include="Disposable.cs" />
+    <Compile Include="BaseEntity.cs" />
+    <Compile Include="EntityConfiguration\RoleConfiguration.cs" />
+    <Compile Include="EntityConfiguration\UserStatusConfiguration.cs" />
+    <Compile Include="Entity\Conf.cs" />
+    <Compile Include="Entity\Lang.cs" />
+    <Compile Include="Entity\Logging\Log.cs" />
+    <Compile Include="Entity\Logging\LogException.cs" />
+    <Compile Include="Entity\Logging\LogType.cs" />
+    <Compile Include="Entity\Permission.cs" />
+    <Compile Include="Entity\Role.cs" />
+    <Compile Include="Entity\Setting.cs" />
+    <Compile Include="Entity\User.cs" />
+    <Compile Include="Entity\UserStatus.cs" />
+    <Compile Include="IRepository\ICounterRepository.cs" />
+    <Compile Include="IRepository\ISettingRepository.cs" />
+    <Compile Include="IRepository\Logging\ILogExceptionRepository.cs" />
+    <Compile Include="IRepository\Logging\ILogRepository.cs" />
+    <Compile Include="IRepository\Logging\ILogTypeRepository.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="myDataException.cs" />
+    <Compile Include="mySsAuth.cs" />
+    <Compile Include="Paging\PG.cs" />
+    <Compile Include="Paging\FilterPG.cs" />
+    <Compile Include="Repository\CounterRepository.cs" />
+    <Compile Include="Repository\Logging\LogType.cs" />
+    <Compile Include="Repository\Logging\LogExceptionRepository.cs" />
+    <Compile Include="Repository\Logging\LogRepository.cs" />
+    <Compile Include="Repository\SettingRepository.cs" />
+    <Compile Include="vuong_cms_context.cs" />
+    <Compile Include="FtsInterceptor.cs" />
+    <Compile Include="Base\IListService.cs" />
+    <Compile Include="Base\LinqHelpers.cs" />
+    <Compile Include="Base\IDatabaseFactory.cs" />
+    <Compile Include="IRepository\IConfigRepository.cs" />
+    <Compile Include="Base\IListRepository.cs" />
+    <Compile Include="Base\IRepository.cs" />
+    <Compile Include="Base\IUnitOfWork.cs" />
+    <Compile Include="IRepository\IRoleRepository.cs" />
+    <Compile Include="IRepository\ILangRepository.cs" />
+    <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryBase.cs" />
+    <Compile Include="Repository\ConfigRepository.cs" />
+    <Compile Include="Repository\LangRepository.cs" />
+    <Compile Include="Repository\PermissionRepository.cs" />
+    <Compile Include="Repository\RoleRepository.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="Temp\CookieRememberMeVM.cs" />
+    <Compile Include="Temp\EditUserVM.cs" />
+    <Compile Include="Temp\loginVM.cs" />
+    <Compile Include="Temp\RoleVM.cs" />
+    <Compile Include="Temp\TemplateVM.cs" />
+    <Compile Include="Temp\ThongKeLienHeVM.cs" />
+    <Compile Include="Temp\UserVM.cs" />
+    <Compile Include="UnitOfWork.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VD.Lib\VD.Lib.csproj">
+      <Project>{4bc1da26-ff8f-41f0-bd95-d95f9527a7c1}</Project>
+      <Name>VD.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="DataTrans\mui.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>mui.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709190135231_fff.resx">
+      <DependentUpon>201709190135231_fff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709201538338_phac_do_cua_toi.resx">
+      <DependentUpon>201709201538338_phac_do_cua_toi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709211002344_shoot.resx">
+      <DependentUpon>201709211002344_shoot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709251058468_user.resx">
+      <DependentUpon>201709251058468_user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709260356509_del_Rememberme.resx">
+      <DependentUpon>201709260356509_del_Rememberme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710010557232_giaodich.resx">
+      <DependentUpon>201710010557232_giaodich.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710010805376_shooot2.resx">
+      <DependentUpon>201710010805376_shooot2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710010849399_shooot3.resx">
+      <DependentUpon>201710010849399_shooot3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710040418585_thongtinggg.resx">
+      <DependentUpon>201710040418585_thongtinggg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710060134426_thongbao.resx">
+      <DependentUpon>201710060134426_thongbao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710060224245_shoot12.resx">
+      <DependentUpon>201710060224245_shoot12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710160315386_nvvip.resx">
+      <DependentUpon>201710160315386_nvvip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710160322354_chuthichvup.resx">
+      <DependentUpon>201710160322354_chuthichvup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141226230_dungcu_mg.resx">
+      <DependentUpon>201712141226230_dungcu_mg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141434478_product_masp_mg.resx">
+      <DependentUpon>201712141434478_product_masp_mg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141445026_xoa_dm2_mg.resx">
+      <DependentUpon>201712141445026_xoa_dm2_mg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141512410_edit_user_mg.resx">
+      <DependentUpon>201712141512410_edit_user_mg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141525284_update_setting_mg.resx">
+      <DependentUpon>201712141525284_update_setting_mg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712162357254_mg_bogiamgia.resx">
+      <DependentUpon>201712162357254_mg_bogiamgia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712171000548_mg_guiemaildonhang.resx">
+      <DependentUpon>201712171000548_mg_guiemaildonhang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712171505514_mg_aboutusmain.resx">
+      <DependentUpon>201712171505514_mg_aboutusmain.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

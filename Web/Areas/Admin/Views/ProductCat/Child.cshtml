@@ -1,0 +1,45 @@
+﻿@model IQueryable<VD.Data.Entity.MF.ProductCat>
+           @{
+               var ngau= myNumbers.LayMaNgauNhien10ChuSo();
+           }
+@if (Model.Any())
+{
+    <div class="text-center">
+        <button onclick="$('#ccc@(ngau)').toggle();$(this).find('.iii').first().toggleClass('fa-toggle-up');" class="btn btn-default">Hiển thị mục con (@Model.Count()) <i class="iii fa fa-toggle-down"> </i> </button>
+    </div>
+    <table class="table table-bordered" id="ccc@(ngau)" style="display: none;">
+        <thead>
+            <tr>
+                <th>Tên danh mục</th>
+                <th>Hiển thị danh sách sản phẩm?</th>
+                <th>Số lượng SP</th>
+                <th>Số lượng SP phụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="javascript:void(0);" onclick="clsMenu.fnShowEdit(@item.Id,true);">
+                            @item.Name <i class="fa fa-pencil"></i>
+                            <br /> <i>@item.Description</i>
+                        </a>
+                    </td>
+                    <td>
+                        @Html.Raw(item.ShowInProduct ? "<i class='fa fa-eye'></i>" : "")
+                    </td>
+                    <td>
+                        @item.Products.Count
+                    </td>
+                  
+                </tr>
+                <tr>
+                    <td colspan="100%">
+                        @{Html.RenderAction("Child", new { parentId = item.Id });}
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

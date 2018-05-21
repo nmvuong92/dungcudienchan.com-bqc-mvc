@@ -1,0 +1,89 @@
+﻿@model Web.ViewModels.BaoKim.NapTheVM
+@{
+    ViewBag.Title = "NÂNG CẤP THÀNH VIÊN VIP";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+}
+
+@section BC{
+    <li class="breadcrumb-item"><a href="@Url.Action("Profile","User")">thông tin tài khoản</a></li>
+}
+
+<link href="/imagebk/Styles/baokim.css" rel="stylesheet" type="text/css" />
+
+<div class="vcontainer">
+    <div>
+        <a class="imgstore" href="http://store.baokim.vn/" target="_blank"></a>
+    </div>
+
+    <div class="text-center">
+        <img src="/imagebk/baokim.png" />
+    </div>
+    <div class="clearfix"></div>
+    @using (Html.BeginForm("NapThe", "BaoKim", FormMethod.Post))
+    {
+       
+        <div style="color:red;">
+            @Html.ValidationSummary(false)
+        </div>
+        <div class="form-group">
+            <label for="Seri" class="col-sm-2 control-label">Nhà mạng</label>
+            <div class="col-sm-10">
+
+                <table>
+                    <tr>
+                        <td><img src="/imagebk/gate.png" /></td>
+                        <td><img src="/imagebk/vcoin.png" /></td>
+                        <td><img src="/imagebk/vt.png" /></td>
+                        <td><img src="/imagebk/mobi.png" /></td>
+                        <td><img src="/imagebk/vina1.png" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" class="rad_bk" name="nhamang" value="Gate"></td>
+                        <td><input type="radio" class="rad_bk" name="nhamang" value="VTC"></td>
+                        <td><input type="radio" class="rad_bk" name="nhamang" value="Viettel" checked="checked"></td>
+                        <td><input type="radio" class="rad_bk" name="nhamang" value="Mobile"></td>
+                        <td><input type="radio" class="rad_bk" name="nhamang" value="Vina"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="pin" class="col-sm-2 control-label">Mã Thẻ</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.pin, new { @class = "form-control", placeholder = "Mã Thẻ" })
+             
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Seri" class="col-sm-2 control-label">Số Seri</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.Seri, new { @class = "form-control", placeholder = "Số Seri"})
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <label for="Captcha" class="col-sm-2 control-label">@mui.mui.contact_captcha</label>
+            <div class="col-sm-9">
+                <img src="/Home/CaptchaImage?prefix=baokimthecao&noisy=false" />
+                @Html.TextBoxFor(m => m.Captcha, new { @class = "form-control", placeholder = "Captcha", tabindex = 1, @style = "width:100px;" })
+            </div>
+          
+        </div>
+
+  
+        <div class="form-group">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-9">
+                <button type="submit" class="btn-default btn btn-primary bg-orange" style="padding: 5px 25px; width: 130px">Nạp thẻ</button>
+            </div>
+        </div>
+
+
+    }
+</div>
+
+@section JS{
+    <script src="/imagebk/Styles/js_bk.js" type="text/javascript"></script>
+}

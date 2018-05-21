@@ -1,0 +1,689 @@
+﻿@using VD.Data
+@model ThanhToanVM
+@{
+    ViewBag.Title = "Dụng cụ diện chẩn";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    bool islog = MySsAuthUsers.GetAuth() != null;
+    string back_url = ViewBag.back_url;
+}
+
+<link rel="stylesheet" href="/Content/lightslider/src/css/lightslider.css" />
+<link href="~/Content/Plugin/pace/pace.css" rel="stylesheet" />
+<!-- use the latest release -->
+<script src="https://cdn.jsdelivr.net/vuejs-paginator/2.0.0/vuejs-paginator.min.js"></script>
+
+<link href="~/Content/hover.css" rel="stylesheet" />
+<link href="~/Content/drop.css" rel="stylesheet" />
+
+<style>
+    .product-item .img {
+        width: 100%;
+        background-image: url(image.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+    }
+
+    .product-item:hover {
+        -moz-box-shadow: 0 0 10px #ccc;
+        -webkit-box-shadow: 0 0 10px #ccc;
+        box-shadow: 0 0 10px #ccc;
+    }
+</style>
+<div id="content">
+    <div class="container-fluid background-white main_products" style="position:relative;" id="main_products">
+        <div id="DSSP">
+            @*<input type="text" placeholder="Tìm kiếm" class="form-control" />*@
+
+            <div id="DM">
+                <div v-for="dmitem in DM">
+
+                    <div class="category-name-container clearfix" v-on:click="fnToggleDM(dmitem)">
+                        <div class="col-sm-6 col-md-6 category-name">
+                            <span>{{dmitem.Name}}</span>
+                        </div>
+                        <div class="col-sm-6 col-md-6 size-col-title text-right">
+                            <i class="fa" v-bind:class="{'fa-plus':!dmitem.Active,'fa-minus':dmitem.Active}"></i>
+                        </div>
+                    </div>
+
+                    <div v-if="dmitem.Active" class="animated fadeIn">
+                        <div class="product-wrapper">
+                            <div v-if="dmitem.SPS.length==0" class="text-center animated bounce">
+                                <h2>0 sản phẩm</h2>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6 text-center nopadding" v-for="item in getShowSPS(dmitem,dmitem.SPS)" style="padding-top: 10px;">
+
+                                <div class="product-item">
+                                    <a v-bind:href="getLink(item)" v-bind:title="'Xem chi tiết: '+item.ProductName">
+                                        <div class="img" v-bind:style="{ 'background-image': 'url(' + item.ThumbnailImage + ')' }">
+                                        </div>
+                                        <div class="menu-item-name">
+                                            {{item.ProductName}}
+                                        </div>
+                                        <div class="menu-item-sku">
+                                            {{item.MaSP}} <span v-if="dmitem.Id==0">-{{item.DanhMuc}}</span>
+                                        </div>
+                                    </a>
+
+                                    <button class="vbtn hvr-shadow-radial menu-item-btn-cart" v-on:click="addCart(item,1)" v-bind:class="{'vbtn-active':item.SLGioHang>0}" v-bind:title="'Thêm vào giỏ hàng: '+item.ProductName">
+                                        <i class="fa fa-cart-plus"></i>
+                                        <span class="badge">{{item.SLGioHang}}</span>
+                                        <br />
+                                        <span class="v-price">{{num(item.Price)}}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="text-center">
+                                <button class="btn btn-primary" v-if="!dmitem.IsShowAll && dmitem.SPS.length>0 && dmitem.SPS.length>ShowNum" v-on:click="fnToggleShowAll(dmitem)">Xem tất cả</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="clearfix" style="margin-top:10px;"></div>
+            @*string url = Url.Action("Detail", "SanPham", new { id = item.Id, seo_title = item.ProductName.URLFriendly() });*@
+            <!-- Icons -->
+
+            <div v-bind:class="{show:IsShowDetail}" class="giohang_inner animated pulse">
+                <div class="row">
+                    <div class="col-md-5">
+                        <a class="btn btn-primary" href="/sanpham/index/#" style="margin-top: 0;padding:6px 12px;"><i class="fa fa-arrow-left"></i> Tiếp tục mua hàng</a>
+                        <a class="btn btn-success" onclick="vueCart.fnShowThanhToan();" style="margin-top: 0;padding:6px 12px;">Thanh toán</a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h2>CHI TIẾT SẢN PHẨM</h2>
+                    </div>
+
+                    <div class="col-md-3 text-right">
+                        <button class="btn hvr-shadow-radial" v-if="DetailSLGioHang!=-1" v-bind:class="{'vbtn-active':DetailSLGioHang>0}" v-on:click="addCartDetail(1)"><i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng <span class="badge">{{DetailSLGioHang}}</span></button>
+                    </div>
+                </div>
+                <div id="NoiDungChiTiet"></div>
+            </div>
+        </div>
+        <div class="row margin-vert-30 main_products">
+
+            <div class="container" id="GioHang">
+                <div v-bind:class="{show:IsShowGioHang}" class="giohang_inner animated pulse">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2>THÔNG TIN ĐƠN ĐẶT HÀNG</h2>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a class="btn btn-primary" v-on:click="fnShowThanhToan()"><i class="fa fa-arrow-left"></i> Tiếp tục mua hàng</a>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive" style="margin-top:10px;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Tên sản phẩm</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Giá</th>
+                                    <th style="width:160px">Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ct_gio_hang" class="text-center">
+                                    <td class="text-left vcenter"><a v-bind:href="getLink(item)">{{item.TenSanPham}}</a></td>
+                                    <td><img v-bind:src="item.HinhAnh" style="width:70px;" /></td>
+                                    <td>{{num(item.DonGia)}}</td>
+                                    <td>
+
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" v-on:click="changeSoLuong(item,-1)">-</button>
+                                            </span>
+                                            <input type="text" class="form-control" v-model="item.SoLuong" readonly="readonly" style="min-width: 50px;" />
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" v-on:click="changeSoLuong(item,1)">+</button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">{{num(item.ThanhTien)}}</td>
+                                    <td>
+                                        <button v-on:click="fnXoa(item)" class="btn btn-danger"><i class="fa fa-remove"></i></button>
+                                    </td>
+                                </tr>
+                                <tr v-if="ct_gio_hang!=null && ct_gio_hang.length==0">
+                                    <td colspan="100%">Giỏ hàng rỗng</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        Tổng tiền hàng:
+                                    </td>
+                                    <td class="text-right">
+                                        {{num(gio_hang.TongTienHang)}}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        VAT:
+                                    </td>
+                                    <td class="text-right">
+                                        {{num(gio_hang.TienVat)}}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        Giá Ship:
+                                    </td>
+                                    <td class="text-right">
+                                        {{num(GiaShip)}}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        Thành tiền:
+                                    </td>
+                                    <td class="text-right">
+                                        {{num(parseInt(gio_hang.ThanhTien)+parseInt(GiaShip))}}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (islog)
+                    {
+                        <h3>Thông tin khách hàng</h3>
+                        using (Ajax.BeginForm("DatHangProccess", "SanPham", FormMethod.Post, new AjaxOptions { OnSuccess = "fnOnSuccess" }))
+                        {
+                            <div style="color: red;">
+                                @Html.ValidationSummary(false)
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="col-sm-12">
+                                        <div id="boxBilling">
+                                            <div class="form-horizontal">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group">
+                                                            <label>Danh xưng</label>
+                                                            @Html.DropDownListFor(m => m.XungDanh, Model.ddlXungDanh, "--Danh Xưng--", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Họ</label>
+                                                            @Html.TextBoxFor(m => m.Ho, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Ho) })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Tên</label>
+                                                            @Html.TextBoxFor(m => m.Ten, new { @class = "form-control", placeholder = HttpUtility.HtmlDecode((Html.DisplayNameFor(m => m.Ten)).ToHtmlString()) })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Điện thoại</label>
+                                                            @Html.TextBoxFor(m => m.SDT, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.SDT) })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Email</label>
+                                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.Email) })
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group">
+                                                            <label>Địa chỉ</label>
+                                                            @Html.TextBoxFor(m => m.DiaChi, new { @class = "form-control", placeholder = "Địa chỉ nhận hàng" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Tỉnh/Thành</label>
+                                                            @Html.DropDownListFor(m => m.ProvinceId, Model.ddlProvince, "--" + HttpUtility.HtmlDecode((Html.DisplayNameFor(m => m.ProvinceId)).ToHtmlString()) + "--", new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.DistrictId) })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Quận/Huyện</label>
+                                                            @Html.DropDownListFor(m => m.DistrictId, Model.ddlDistrict, "--" + HttpUtility.HtmlDecode((Html.DisplayNameFor(m => m.DistrictId)).ToHtmlString()) + "--", new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.DistrictId) })
+                                                            <code>+{{num(GiaShip)}} Giá ship</code>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Phường/Xã</label>
+                                                            @Html.DropDownListFor(m => m.WardId, Model.ddlWard, "--" + HttpUtility.HtmlDecode((Html.DisplayNameFor(m => m.WardId)).ToHtmlString()) + "--", new { @class = "form-control", placeholder = Html.DisplayNameFor(m => m.WardId) })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Hình thức thanh toán</label>
+                                                            @Html.DropDownListFor(m => m.HTTTID, Model.ddlHttt, "--Hình thức thanh toán--", new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div id="paymentCK" class="hidden">
+                                                                @Html.Raw(ViewBag.PaymentCK)
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success">  Đặt hàng <i class="glyphicon glyphicon-menu-right"></i> </button>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+
+                        <a style="color:#000" class="btn btn-info input-block-level form-control" href="javascript:void(0);" onclick="clsUser.showPopLogin('Đăng nhập');">Đăng nhập</a>
+                    }
+                </div>
+
+                <div class="mini_giohang" v-on:click="fnShowThanhToan()" style="width: 350px">
+                    <div class="vcontainer">
+                        <img style="width: 64px; position: absolute;top: -25px;" src="http://www.iconninja.com/files/648/1007/682/cart-bag-shop-shopping-magazine-shopping-cart-basket-add-webshop-buy-shipping-ecommerce-icon.png" />
+                        <div style="margin-left: 100px;width: 100%">
+                            Giỏ Hàng <strong v-if="ct_gio_hang!=null">{{fnLaySoLuongCT()}}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JS{
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/src/loadingoverlay.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.5.4/extras/loadingoverlay_progress/loadingoverlay_progress.min.js"></script>
+    <script src="/Content/lightslider/src/js/lightslider.js"></script>
+    <script src="~/Content/Plugin/pace/pace.min.js"></script>
+
+    <script type="text/javascript">
+
+        function fnOnSuccess(data) {
+            if (data.r) {
+                window.location.replace("@Url.Action("ThongTinDonHang")?id="+data.v);
+            } else {
+                alert(data.m);
+            }
+        }
+        $(function () {
+
+            $(window).ajaxStart(function () {
+                Pace.start();
+                $("#GioHang").LoadingOverlay("show");
+                $("#DSSP").LoadingOverlay("show");
+
+            });
+            $(window).ajaxStop(function () {
+                $("#GioHang").LoadingOverlay("hide", true);
+                $("#DSSP").LoadingOverlay("hide", true);
+                Pace.stop();
+            });
+
+            $('#HTTTID').change(function () {
+                if ($(this).val() === '3') {
+                    $('#paymentCK').removeClass('hidden');
+                } else {
+                    $('#paymentCK').addClass('hidden');
+                }
+            }).change();
+
+            setInterval(function () {
+                var total = parseInt(vueCart.gio_hang.ThanhTien) + parseInt(vueCart.GiaShip);
+                if (total >= 5000000) {
+                    $('#HTTTID').val(3);
+                    $('#HTTTID option[value!="3"]').addClass('hidden');
+                    $('#paymentCK').removeClass('hidden');
+                } else {
+                    $('#HTTTID option').removeClass('hidden');
+                    $('#paymentCK').addClass('hidden');
+                }
+            }, 1000);
+
+            $("#ProvinceId").change(function () {
+                var id = $(this).val();
+                console.log(id);
+                if (id != "") {
+
+                    $.getJSON("/SanPham/LayGiaShipProvince?district_id=" + id, function (data) {
+                        vueCart.GiaShip = data;
+                    });
+                    $.getJSON("/SanPham/ddlDistrict?province_id=" + id, function (data) {
+                        var _ops = "<option value=''>--Chọn quận/huyện--</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            _ops += "<option value='" + data[i].Id + "'>" + data[i].Name + "</option>";
+                        }
+                        $("#DistrictId").html(_ops);
+                    });
+                }
+            });
+            $("#DistrictId").change(function () {
+                var id = $(this).val();
+
+                if (id != undefined && id != "") {
+                    //la y gia ship
+
+                    $.getJSON("/SanPham/LayGiaShip?district_id=" + id, function (data) {
+                        vueCart.GiaShip = data;
+                    });
+                    $.getJSON("/SanPham/ddlWard?district_id=" + id, function (data) {
+                        var _ops = "<option value=''>--Chọn phường/xã--</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            _ops += "<option value='" + data[i].Id + "'>" + data[i].Name + "</option>";
+                        }
+                        $("#WardId").html(_ops);
+                    });
+
+                }
+
+            });
+        });
+
+        var DSSP = new Vue({
+            el: "#DSSP",
+            data: {
+                scroll_top: 0,
+                IsShowDetail: false,
+                DetailSLGioHang: -1,
+                DetailIDSP: -1,
+                DM: [],
+                ShowNum: 8,
+                resource_url: "@Url.Action("LayDSSP")"
+            },
+            methods: {
+
+                showDetail: function (idsp) {
+                    DSSP.DetailSLGioHang = -1;
+                    this.sroll_top = $(window).scrollTop();
+
+                   // console.log(this.sroll_top);
+
+                    vueCart.fnHideAll();
+
+                    $("#DM").hide();
+                    DSSP.DetailIDSP = idsp;
+                    $.getJSON("@Url.Action("LaySanPhamGioHang")?id=" + idsp, function (data) {
+                        DSSP.DetailSLGioHang = data.SoLuong;
+                    });
+                    $("#NoiDungChiTiet").html("");
+                    $.get("@Url.Action("Detail")?id=" + idsp, function (data_html) {
+
+                        $("#NoiDungChiTiet").html(data_html);
+
+                        $("#content-slider").lightSlider({
+                            loop: true,
+                            keyPress: true
+                        });
+                        $('#image-gallery').lightSlider({
+                            autoWidth: false,
+                            gallery: true,
+                            item: 1,
+                            thumbItem: 9,
+                            slideMargin: 5,
+                            speed: 500,
+                            auto: false,
+                            loop: false,
+                            onSliderLoad: function () {
+                                $('#image-gallery').removeClass('cS-hidden');
+                            }
+                        });
+                        DSSP.IsShowDetail = true;
+                        $("html").scrollTop(0);
+                    });
+
+                },
+                getLink: function (sp) {
+                    return "/sanpham/index/#/chi-tiet/" + sp.Id;
+                },
+                load: function () {
+                    $.getJSON("@Url.Action("LayDSSP")", function (data) {
+                        DSSP.DSSP = data;
+                    });
+                },
+                fnToggleDM: function (dm) {
+                    dm.Active = !dm.Active;
+                    if (dm.Active) {
+                        $.getJSON("@Url.Action("LayDSSP")?DMID=" + dm.Id, function (data) {
+                            dm.SPS = data;
+                            DSSP.syncSoLuongGioHang();
+                        });
+                    }
+                },
+                getShowSPS: function (dm, sps) {
+                    if (dm.IsShowAll) {
+                        return dm.SPS;
+                    } else {
+                        return dm.SPS.slice(0, this.ShowNum);
+                    }
+                },
+                fnToggleShowAll: function (dm) {
+                    dm.IsShowAll = !dm.IsShowAll;
+                },
+                loadDM: function () {
+                    $.getJSON("@Url.Action("LayDM")", function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                           // data[i].SPS = [];
+                            data[i].IsShowAll = false;
+                        }
+                            DSSP.DM = data;
+
+                            @*for (var idm = 0; idm < DSSP.DM.length; idm++) {
+                                if (DSSP.DM[idm].Active == true) {
+                                    $.getJSON("@Url.Action("LayDSSP")?DMID=" + DSSP.DM[idm].Id, function (data2) {
+                                        DSSP.DM[idm].SPS = data2;
+                                        DSSP.syncSoLuongGioHang();
+                                    });
+                                }
+                            }*@
+
+                    });
+                },
+                addCart: function (item, sl) {
+                    var _data = {
+                        SanPhamId: item.Id,
+                        SoLuong: sl
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: "/SanPham/ThemSanPham",
+                        data: _data,
+                        success: function (data) {
+                            if (data.r) {
+                                item.SLGioHang++;
+                                vueCart.fnLayGioHang();
+                            } else {
+                                toastr.error(data.m);
+                            }
+                        }
+                    });
+                },
+                addCartDetail: function (sl) {
+                    var _data = {
+                        SanPhamId: DSSP.DetailIDSP,
+                        SoLuong: sl
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: "/SanPham/ThemSanPham",
+                        data: _data,
+                        success: function (data) {
+                            if (data.r) {
+                                DSSP.DetailSLGioHang++;
+                                vueCart.fnLayGioHang();
+                            } else {
+                                toastr.error(data.m);
+                            }
+                        }
+                    });
+                },
+                syncSoLuongGioHang: function () {
+                    for (var i = 0; i < vueCart.ct_gio_hang.length; i++) {
+                        for (var j = 0; j < DSSP.DM.length; j++) {
+
+                            for (var k = 0; k < DSSP.DM[j].SPS.length; k++) {
+                                if (vueCart.ct_gio_hang[i].SanPhamId == DSSP.DM[j].SPS[k].Id) {
+                                    DSSP.DM[j].SPS[k].SLGioHang = vueCart.ct_gio_hang[i].SoLuong;
+                                }
+                            }
+
+                        }
+                    }
+                },
+                num: function (x) {
+                    if (x != null) {
+                        var parts = x.toString().split(".");
+                        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return parts.join(",");
+                    }
+                    return "";
+                }
+
+            },
+            updated: function () {
+
+            }
+        });
+
+        DSSP.loadDM();
+
+        var vueCart = new Vue({
+            el: "#GioHang",
+
+            data: {
+                IsShowGioHang: false,
+                IsThanhToan: false,
+                GiaShip: 0,
+                gio_hang: {
+                    TongTienHang: 0,
+                    TienVat: 0,
+                    ThanhTien: 0,
+                },
+                ct_gio_hang: [],
+            },
+            methods: {
+                fnHideAll:function() {
+                    this.IsShowGioHang = false;
+                    this.IsThanhToan = false;
+                },
+                getLink: function (sp) {
+                    return "/sanpham/index/#/chi-tiet/" + sp.SanPhamId;
+                },
+                fnShowThanhToan: function () {
+                    DSSP.IsShowDetail = false;
+                    this.sroll_top = $(window).scrollTop();
+                    $("html").scrollTop(0);
+                    this.IsShowGioHang = !this.IsShowGioHang;
+                    this.IsThanhToan = !this.IsThanhToan;
+                    if (this.IsShowGioHang) {
+                        $("#DM").hide();
+                    } else {
+                        $("#DM").show();
+                    }
+
+                },
+                fnDis: function () {
+                    $("#GioHang").LoadingOverlay("show");
+                },
+                fnEna: function () {
+                    $("#GioHang").LoadingOverlay("hide", true);
+                },
+                fnLayGioHang: function () {
+
+                    $.getJSON("@Url.Action("LayGioHang")", function (data) {
+                        vueCart.gio_hang = data;
+                        vueCart.ct_gio_hang = data.CTGioHangs;
+                        DSSP.syncSoLuongGioHang();
+                    });
+                },
+                fnLaySoLuongCT: function () {
+                    var total = 0;
+                    for (var i = 0; i < this.ct_gio_hang.length; i++) {
+                        total += this.ct_gio_hang[i].SoLuong;
+                    }
+                    return total;
+                },
+                fnXoa: function (item) {
+
+                    var ajaxops = {
+                        url: "@Url.Action("Xoa")",
+                        param: JSON.stringify({ id: item.SanPhamId }),
+                        fnSuccess: function (data) { //Success
+                            vueCart.fnLayGioHang();
+                        }
+                    };
+                    fnAjax(ajaxops);
+                },
+                changeSoLuong: function (item, slct) {
+                    item.SoLuong += slct;
+                    var ajaxops = {
+                        url: "@Url.Action("CapNhatSoLuong")",
+                        param: JSON.stringify({ id: item.SanPhamId, sl: item.SoLuong }),
+                        fnSuccess: function (data) { //Success
+                            vueCart.fnLayGioHang();
+                        }
+                    };
+                    fnAjax(ajaxops);
+                },
+                num: function (x) {
+                    if (x != null) {
+                        var parts = x.toString().split(".");
+                        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return parts.join(",");
+                    }
+                    return "";
+                }
+            },
+            updated: function () {
+                $("#SLSPGH").html(this.ct_gio_hang.length);
+            }
+        });
+        vueCart.fnLayGioHang();
+
+        function laygiaship() {
+            var id = $("#DistrictId").val();
+            if (id != undefined && id != "") {
+                $.getJSON("/SanPham/LayGiaShip?district_id=" + id, function (data) {
+                    vueCart.GiaShip = data;
+                    vueCart.GiaShip = data;
+                });
+            }
+        }
+
+        laygiaship();
+
+        var app_self;
+        var app = $.sammy(function () {
+            app_self = this;
+            this.get('/sanpham/index/#/chi-tiet/:idsp', function () {
+                //alert(this.params['idsp']);
+                DSSP.showDetail(this.params['idsp']);
+            });
+
+            this.get('/sanpham/index/', function () {
+                $("#DM").show();
+
+                //$(window).scrollTop(DSSP.scroll_top);
+
+                //your function
+                DSSP.IsShowDetail = false;
+            });
+            this.get('/sanpham', function () {
+                $("#DM").show();
+
+                //$(window).scrollTop(DSSP.scroll_top);
+
+                //your function
+                DSSP.IsShowDetail = false;
+            });
+        });
+        app.run();
+        app.run('#/');
+    </script>
+}

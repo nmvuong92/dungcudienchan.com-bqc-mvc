@@ -1,0 +1,42 @@
+﻿
+
+@{
+    ViewBag.Title = "Welcome";
+    ViewBag.Title2 = "Dashboard management";
+    Layout = "~/Views/Shared/_vt.cshtml";
+
+}
+<!--default-->
+
+
+@*<input type="checkbox" class="js-switch" />
+<input type="checkbox" class="js-custom"/>
+@section JS{
+    <script>
+       
+       //custom
+        var elem = document.querySelector('.js-custom');
+        var switchery = new Switchery(elem, {size: 'large', color: '#faab43', secondaryColor: '#fC73d0', jackColor: '#fcf45e', jackSecondaryColor: '#c8ff77' });
+    </script>
+
+}*@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Lượt truy cập</div>
+                <div class="panel-body">
+                    <div class="partialContents" data-url="@Url.Action("ThongKeLuongTruyCap","Home")">
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+   
+</div>
+
+
+

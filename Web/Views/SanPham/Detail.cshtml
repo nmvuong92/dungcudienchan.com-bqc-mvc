@@ -1,0 +1,126 @@
+﻿@model Web.ViewModels.MF.ChiTietSanPhamView
+@{
+    ViewBag.Title = Model.SanPham.ProductName;
+    Layout = null;
+
+    //string back_url = myBase64EncodeDecode.EncodeBase64(Request.RawUrl);
+}
+
+
+    <div class="row">
+        <div class="sp">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+
+
+                <!-- Tab panes -->
+                <div class="tab-content text-center" style="position: relative; width: 100%; overflow: hidden;">
+                    <div class="tab-pane active text-center" id="home">
+                        <div class="demo text-center">
+                            <div class="item  text-center">
+                                <div class="clearfix" style="max-width:650px;margin:0px auto;">
+                                    <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
+                                        
+                                        @if (Model.SanPham.ImgTmp != null)
+                                        {
+                                            foreach (var item in Model.SanPham.ImgTmp.ImgTmpDetails)
+                                            {
+                                                <li data-thumb="@item.Thumbnail">
+                                                    <img src="@item.FullImage" />
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 thongtinsp">
+                <h2>@Model.SanPham.ProductName</h2>
+                <div class="padding-10">
+                    @Html.Raw(Model.SanPham.Infomation)
+                </div>
+                <h4 class="padding-10">
+                     <span class="price-off">@Model.SanPham.Price.ToMoneyStr()</span>
+                    <span class="VAT">VAT: 0%</span>
+                </h4>
+
+                <div class="button padding-10">
+                   
+                       <a  target="_blank" class="btn btn-primary btn-link b" href="@Url.Action("HuongDanMuaHang","TinTuc")" onclick="return ModelGuide();"><i class="fa fa-align-left"></i> Hướng dẫn mua hàng </a>
+                  
+                    <div class="clearfix"></div>
+                    @*<div class=" padding-top-20">
+                        <div class="share-fotter product clearfix">
+                            <span>CHIA SẺ</span><span class="border-share"> | </span> <i class="fa fa-2x fa-facebook padding-horiz-20"></i><i class="fa fa-2x  fa-twitter padding-horiz-20"></i>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+
+            <div id="infodetail">
+               
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 thongtinsp">
+                        <div class="content-title">
+                            <h2 class="title"> Thông tin chi tiết</h2>
+                        </div>
+                    </div>
+              
+                <div class="clearfix"></div>
+                <div style="padding: 20px;">
+                    @Html.Raw(Model.SanPham.Infomation)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="col-xs-12 caption-product pad-0">
+        <div class="text-center">
+            <div class="content-title">
+                <h2 class="title"> Sản phẩm liên quan </h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Icons -->
+        @foreach (var item in Model.SanPhamLienQuan)
+        {
+            string link = Url.Action("Detail", new { id = item.Id, seo_title = item.ProductName.URLFriendly() });
+            <div class="col-md-3 text-center product-item">
+                <div class="img">
+                    <a href="@link"><img src="@item.ThumbnailImage" alt=""></a>
+                </div>
+                <h4 class="padding-top-10 animate fadeIn"><a href="@link">@item.ProductName</a></h4>
+                <h5><span class="price-off">@item.Price.ToMoneyStr()</span></h5>
+                <!--<span class="sticker-discount sprite sprite-productlist-sticker-discount"> -30% </span>-->
+                <a href="@link"><p class="link small">Xem chi tiết <i class="fa fa-angle-double-right"></i></p></a>
+            </div>
+        }
+    </div>*@
+
+
+@*@section JS{
+    <script src="/Content/lightslider/src/js/lightslider.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#content-slider").lightSlider({
+                loop: true,
+                keyPress: true
+            });
+            $('#image-gallery').lightSlider({
+                autoWidth: false,
+                gallery: true,
+                item: 1,
+                thumbItem: 9,
+                slideMargin: 5,
+                speed: 500,
+                auto: @Json.Encode(Model.SanPham.ImgTmp.ImgTmpDetails.Count>=2),
+                loop: @Json.Encode(Model.SanPham.ImgTmp.ImgTmpDetails.Count>=2),
+                onSliderLoad: function () {
+                    $('#image-gallery').removeClass('cS-hidden');
+                }
+            });
+        });
+    </script>
+}*@
