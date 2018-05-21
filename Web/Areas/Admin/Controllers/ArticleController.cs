@@ -1,28 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using System;
-
-using System.Linq;
-using System.Net;
 using System.Transactions;
 using System.Web.Mvc;
-using Ninject;
 using VD.Data;
 using VD.Data.Base;
 using VD.Data.Entity.MF;
 using VD.Data.IRepository;
 using VD.Data.Paging;
-
-
 using VD.Lib.DTO;
-using VD.Lib.Encode;
 using Web.Areas.Admin.ViewModels.MF;
 using Web.Controllers;
 using Web.Security;
 
 namespace Web.Areas.Admin.Controllers
 {
-       [myAuth(Roles = "1")]
+    [myAuth(Roles = "1")]
     public class ArticleController : BaseController
     {
         private IArticleRepository _ArticleServ;

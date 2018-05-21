@@ -53,12 +53,12 @@
       <HintPath>..\..\lib\ck\CKFinder.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
@@ -204,7 +204,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="baokim_c1606499c9951e9b.html" />
     <Content Include="Content\css\img\chrome_throbber_fast_16.gif" />
     <Content Include="Content\css\img\google-play-badge.png" />
     <Content Include="Content\css\login-register.css" />
@@ -223,13 +222,10 @@
     <Compile Include="Areas\Admin\ViewModels\MF\ArticleCRUD.cs" />
     <Compile Include="Areas\Admin\ViewModels\MF\ProductCatCRUD.cs" />
     <Compile Include="Areas\Admin\ViewModels\MF\ProductCRUD.cs" />
-    <Compile Include="Controllers\BaoKimController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\BPNController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
-    <Compile Include="Controllers\NganLuongController.cs" />
-    <Compile Include="Controllers\NganLuongMobileCardController.cs" />
     <Compile Include="Controllers\PricingController.cs" />
     <Compile Include="Controllers\SachBQCController.cs" />
     <Compile Include="Controllers\ThongBaoController.cs" />
@@ -262,19 +258,7 @@
     <Compile Include="JWT\UtcDateTimeProvider.cs" />
     <Compile Include="Models\BQC\DoHinhPhanChieuModel.cs" />
     <Compile Include="Models\BQC\SoTayDienChanModel.cs" />
-    <Compile Include="NganLuong\nganluong.cs" />
-    <Compile Include="NganLuongMobileCard\NLCardLib.cs" />
     <Compile Include="Security\EncodeDecodeJWT.cs" />
-    <Compile Include="Service References\NganLuongService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\SaleCardControllerService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\BaoKim\NapTheVM.cs" />
     <Compile Include="ViewModels\BQC\CapNhatUserVM.cs" />
     <Compile Include="ViewModels\BQC\DoiMatKhauVM.cs" />
@@ -6277,19 +6261,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\sammy-latest.min.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="Service References\NganLuongService\public_api.wsdl" />
-    <None Include="Service References\SaleCardControllerService\configuration91.svcinfo" />
-    <None Include="Service References\SaleCardControllerService\configuration.svcinfo" />
-    <None Include="Service References\SaleCardControllerService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\NganLuongService\configuration91.svcinfo" />
-    <None Include="Service References\NganLuongService\configuration.svcinfo" />
-    <None Include="Service References\NganLuongService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="uploads\files\nvpv.png" />
     <Content Include="uploads\media\files\1%281%29.jpg" />
     <Content Include="uploads\media\files\1.jpg" />
@@ -6408,11 +6379,7 @@
     <Content Include="Views\SachBQC\Index.cshtml" />
     <Content Include="Views\SachBQC\Read.cshtml" />
     <Content Include="Views\Shared\_layout.cshtml" />
-    <None Include="Service References\SaleCardControllerService\SaleCardController.wsdl" />
     <Content Include="Views\BaoKim\NapThe.cshtml" />
-    <Content Include="Service References\SaleCardControllerService\Web.SaleCardControllerService.TopupToMerchantResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Views\User\LichSuGiaoDich.cshtml" />
     <Content Include="Views\User\LichSuNapThe.cshtml" />
     <Content Include="Views\User\DoiMatKhau.cshtml" />
@@ -6493,10 +6460,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\NganLuongService\" />
-    <WCFMetadataStorage Include="Service References\SaleCardControllerService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

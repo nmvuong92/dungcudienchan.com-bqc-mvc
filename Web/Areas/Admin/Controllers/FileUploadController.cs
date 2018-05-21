@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+
 using System.IO;
 using System.Linq;
 using System.Transactions;
@@ -18,7 +18,7 @@ namespace Web.Areas.Admin.Controllers
     [myAuth(Roles = "1")]
     public class FileUploadController : Controller
     {
-        private vuong_cms_context __db = new vuong_cms_context();
+        public vuong_cms_context __db = new vuong_cms_context();
         FilesHelper filesHelper;
         String tempPath = "~/somefiles/";
         String serverMapPath = "~/Files/somefiles/";
