@@ -7,19 +7,6 @@
 <div class="content">
     <div class="container-fluid background-white main_products" id="main_products">
         <div class="margin-vert-30">
-            <!-- breadcrumb -->
-            @*<div class="breadcrumb clearfix">
-                    <a class="home" href="index.html" title="Trở về trang chủ">Trang chủ</a>
-                    <span class="navigation-pipe"></span>
-                    <span class="navigation_page">Chi tiết</span>
-
-                </div>*@
-
-            @Html.myBreadCrumbs(new List<MvcHtmlString>()
-            {
-                Html.ActionLink("Tin tức","Index","TinTuc")
-            })
-            <!-- ./breadcrumb -->
             <div class="detail">
                 <div class="page-heading">
                     <h2>@Model.BaiViet.Title</h2>

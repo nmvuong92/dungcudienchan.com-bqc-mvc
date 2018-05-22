@@ -59,7 +59,7 @@ namespace Web.Controllers
                 qqq = __db.Product.Where(w => w.ProductCatId == DMID).OrderBy(q=>q.IsBanChay).ThenByDescending(q=>q.Id).AsQueryable();
             }
 
-            var lst = qqq.Select(s => new ProductJson
+            var lst = qqq.OrderBy(o=>o.ProductName).Select(s => new ProductJson
             {
                 Id = s.Id,
                 MaSP = s.MaSP,
@@ -116,7 +116,7 @@ namespace Web.Controllers
                 {
                     qqq = __db.Product.Where(w => w.ProductCatId == DMID).OrderBy(q => q.IsBanChay).ThenByDescending(q => q.Id).AsQueryable();
                 }
-                var lst_sps = qqq.Select(s => new ProductJson
+                var lst_sps = qqq.OrderBy(o=>o.ProductName).Select(s => new ProductJson
                 {
                     Id = s.Id,
                     MaSP = s.MaSP,

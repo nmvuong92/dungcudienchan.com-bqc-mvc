@@ -31,7 +31,6 @@ namespace Web
 
             return isValidDSHuyet(testStr); //validation su hop le
         }
-
         public rs isValidDSHuyet(string dshuyet)
         {
             List<string> huyet_split = dshuyet.Split(',').ToList();
@@ -41,14 +40,13 @@ namespace Web
             {
                 ValidationHuyet __val = new ValidationHuyet();
                 var lay_ten = __val.fnLayTenAnhPTCT(huyet);
-                string search = System.Web.HttpContext.Current.Server.MapPath("~/Content/bqc/" + lay_ten + ".png");
+                string search = HttpContext.Current.Server.MapPath("~/Content/bqc/" + lay_ten + ".png");
                 
                 if (!System.IO.File.Exists(search))
                 {
                     _msg += huyet;
                     DemHuyetLoi++;
                 }
-
             }
             rs r;
             if (DemHuyetLoi != 0)
